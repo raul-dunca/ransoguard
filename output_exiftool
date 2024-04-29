@@ -1,0 +1,24 @@
+ExifTool Version Number         : 12.84
+File Name                       : a.exe
+Directory                       : C:/Users/dunca/Desktop
+File Size                       : 57 kB
+File Modification Date/Time     : 2024:04:23 15:57:24+03:00
+File Access Date/Time           : 2024:04:29 11:44:57+03:00
+File Creation Date/Time         : 2024:04:23 15:57:24+03:00
+File Permissions                : -rw-rw-rw-
+File Type                       : Win64 EXE
+File Type Extension             : exe
+MIME Type                       : application/octet-stream
+Machine Type                    : AMD AMD64
+Time Stamp                      : 2024:04:23 15:57:24+03:00
+Image File Characteristics      : No relocs, Executable, No line numbers, Large address aware
+PE Type                         : PE32+
+Linker Version                  : 2.30
+Code Size                       : 7680
+Initialized Data Size           : 15872
+Uninitialized Data Size         : 2560
+Entry Point                     : 0x14e0
+OS Version                      : 4.0
+Image Version                   : 0.0
+Subsystem Version               : 5.2
+Subsystem                       : Windows command line
