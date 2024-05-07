@@ -1,9 +1,11 @@
+import csv
 import queue
 import subprocess
 import threading
 
 import pefile
 from PyQt5.QtCore import Qt, QFileInfo, pyqtSlot, pyqtSignal, QPropertyAnimation, QEasingCurve, QMutex, QTimer
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.uic import loadUi
 
@@ -21,11 +23,14 @@ class MainScreen(QDialog):
         self.smooth_progress_animation = None
         self.mutex = QMutex()
         self.error_mtx = QMutex()
+        self.dictionary_mtx=QMutex()
         self.error=False
         self.done_threads=0
+        self.features_dictionary={}
         self.init_dragndrop_label()
         self.init_buttons()
         self.init_progress_bar()
+
 
     def init_progress_bar(self):
         self.progressBar.hide()
@@ -60,6 +65,12 @@ class MainScreen(QDialog):
         self.settingsButton.clicked.connect(self.go_to_settings)
         self.browse_files_button.clicked.connect(self.browser_files)
         self.menu_button_hovers()
+        icon = QIcon('home.png')
+        self.homeButton.setIcon(icon)
+        icon = QIcon('histroy.png')
+        self.historyButton.setIcon(icon)
+        icon = QIcon('settings.png')
+        self.settingsButton.setIcon(icon)
 
     def drag_enter_event(self,event):
         if event.mimeData().hasUrls():
@@ -261,14 +272,34 @@ class MainScreen(QDialog):
             self.mutex.lock()
             self.update_progress.emit(25)
 
+    # def run_exiftool(self,file_path):
+    #     """
+    #     executes exiftool on the file_path and error handles it
+    #     """
+    #
+    #     command = "exiftool " + file_path
+    #     with open("output_exiftool", 'w') as f:
+    #         result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.DEVNULL)
+    #
+    #     if result.stderr:
+    #         error_message = f"Exiftool Error: {result.stderr.decode('utf-8')}"
+    #         self.error_mtx.lock()
+    #         self.error_queue.put(error_message)
+    #         self.error_sig.emit(4)
+    #     else:
+    #         self.mutex.lock()
+    #         self.update_progress.emit(25)
+
+
     def run_exiftool(self,file_path):
         """
         executes exiftool on the file_path and error handles it
         """
 
         command = "exiftool " + file_path
-        with open("output_exiftool", 'w') as f:
-            result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.DEVNULL)
+        #with open("output_exiftool", 'w') as f:
+
+        result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
         if result.stderr:
             error_message = f"Exiftool Error: {result.stderr.decode('utf-8')}"
@@ -276,8 +307,17 @@ class MainScreen(QDialog):
             self.error_queue.put(error_message)
             self.error_sig.emit(4)
         else:
+            output = result.stdout.decode('utf-8')
+
+            self.dictionary_mtx.lock()
+            for line in output.strip().split('\n'):
+                key, value = line.split(':', 1)
+                self.features_dictionary[key.strip()] = value.strip()
+            self.dictionary_mtx.unlock()
+
             self.mutex.lock()
             self.update_progress.emit(25)
+
 
     def go_to_settings(self):
         self.homeButton.setChecked(True)
