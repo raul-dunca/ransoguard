@@ -1,3 +1,5 @@
+import csv
+import os
 import queue
 import re
 import subprocess
@@ -7,10 +9,7 @@ from collections import Counter
 import pefile
 from PyQt5.QtCore import QMutex
 
-error_mtx=QMutex()
-dict_mutex=QMutex()
-error_queue=queue.Queue()
-features_dictionary={}
+
 def run_exiftool(file_path):
      """
      executes exiftool on the file_path and error handles it
@@ -194,11 +193,11 @@ def run_pefile(file_path):
             error_mtx.unlock()
 
 
-def perform_static_analysis():
-    thread_pefile = threading.Thread(target=run_pefile, args=(quoted_file_path,))
-    thread_floss = threading.Thread(target=run_floss, args=(quoted_file_path,))
-    thread_dependency = threading.Thread(target=run_dependency, args=(quoted_file_path,))
-    thread_exiftool = threading.Thread(target=run_exiftool, args=(quoted_file_path,))
+def perform_static_analysis(file_path):
+    thread_pefile = threading.Thread(target=run_pefile, args=(file_path,))
+    thread_floss = threading.Thread(target=run_floss, args=(file_path,))
+    thread_dependency = threading.Thread(target=run_dependency, args=(file_path,))
+    thread_exiftool = threading.Thread(target=run_exiftool, args=(file_path,))
 
     thread_pefile.start()
     thread_floss.start()
@@ -210,25 +209,59 @@ def perform_static_analysis():
     thread_dependency.join()
     thread_exiftool.join()
 
-file_path= r"C:\Users\dunca\Desktop\a.exe"
 
-quoted_file_path = '"{}"'.format(file_path)
+def write_dicts_to_csv(file_path, dictionaries):
+    # Extract all unique keys from the dictionaries
+    fieldnames = set().union(*dictionaries)
+
+    with open(file_path, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()  # Write the header row with all unique keys
+
+        for dictionary in dictionaries:
+            writer.writerow(dictionary)
 
 
 
-perform_static_analysis()
+error_mtx=QMutex()
+dict_mutex=QMutex()
+error_queue=queue.Queue()
 
 
-error_message=""
-while not error_queue.empty():
-    error_message += error_queue.get().strip() + '\n'
-print(error_message)
+directory_path=r"C:\Users\dunca\Desktop\a"
+output_file="output.csv"
+dictionaries = []
+
+with open(output_file, 'w') as file:
+    file.truncate(0)
+
+for filename in os.listdir(directory_path):
+    features_dictionary = {}
+    file_path = os.path.join(directory_path, filename)
+    quoted_file_path = '"{}"'.format(file_path)
+    perform_static_analysis(quoted_file_path)
+
+    error_message = ""
+    while not error_queue.empty():
+        error_message += error_queue.get().strip() + '\n'
+    print(error_message)
+
+    dictionaries.append(features_dictionary)
+
+    print(filename + " done")
+
+write_dicts_to_csv(output_file, dictionaries)
 
 
-with open("output.txt", 'w+', encoding='utf-8') as file:
-    # Iterate over the dictionary and write each key-value pair to the file
-    for key, value in features_dictionary.items():
-        file.write(f"{key}: {value}\n")
+
+
+
+
+
+
+
+
 
 
 
