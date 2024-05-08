@@ -135,8 +135,6 @@ def run_pefile(file_path):
                 file.write(output)
 
             hex_pattern = r"0[xX][0-9A-Fa-f]+"
-            ignore_start1 = "Unwind data for exception handling"
-            ignore_start2="Base relocations"
             title=""
             section_name=""
             good_section_names= {"LOAD_CONFIG", "DOS_HEADER", "NT_HEADERS", "FILE_HEADER", "OPTIONAL_HEADER",
