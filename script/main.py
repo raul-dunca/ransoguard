@@ -18,8 +18,10 @@ def run_exiftool(file_path):
      command = "exiftool " + file_path
 
      result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    
 
      if result.stderr:
+         print("err")
          error_message = f"Exiftool Error: {result.stderr.decode('utf-8')}"
          error_mtx.lock()
          error_queue.put(error_message)
@@ -128,11 +130,17 @@ def run_pefile(file_path):
         try:
             pe = pefile.PE(file_path)
             output=str(pe)
-
+            
+            with open('pefile.txt','w+') as file:
+                file.write(output)
 
             hex_pattern = r"0[xX][0-9A-Fa-f]+"
-            ignore_start = "Unwind data for exception handling"
+            ignore_start1 = "Unwind data for exception handling"
+            ignore_start2="Base relocations"
             title=""
+            section_name=""
+            good_section_names= {"LOAD_CONFIG", "DOS_HEADER", "NT_HEADERS", "FILE_HEADER", "OPTIONAL_HEADER",
+                                 "PE Sections", "Directories", "Imported symbols", "TLS", ""}
 
             index=0
             imported_symbols=[]
@@ -141,42 +149,45 @@ def run_pefile(file_path):
 
 
             for line in output.strip().split('\n'):
+                
+                
+                if line.startswith("----------") and line.endswith("----------"):
+                    section_name=line.replace('-','')
 
-                if ignore_start in line:
-                    break
+                if section_name in good_section_names:
 
-                if line.startswith("[") and line.endswith("]"):
-                    title=line[1:-1]
+                    if line.startswith("[") and line.endswith("]"):
+                        title=line[1:-1]
 
-                if title=="IMAGE_IMPORT_DESCRIPTOR":            #we are in the Imported Symbols section
-                    title=imported_symbols[index]
-                    index+=1
+                    if title=="IMAGE_IMPORT_DESCRIPTOR":            #we are in the Imported Symbols section
+                        title=imported_symbols[index]
+                        index+=1
 
-                if title!="" and  line.startswith(title):       #add dll functions imported to the feature_dictionary
-                    dll=line.split()[0]
-                    dict_mutex.lock()
-                    if dll in features_dictionary:
-                        print(dll)
-                    features_dictionary[dll] = 1
-                    dict_mutex.unlock()
-
-                match = re.findall(hex_pattern, line)
-                if match:
-                    if len(match)>=3:
-                        field_name, value = line.split()[2], match[2]
-                        #value = int(value, 16)  or   value = hex_to_int(value)
-                    else:
-                        field_name, value = line.split()[2], 0
-
-                    if field_name == "Name:" and title == "IMAGE_SECTION_HEADER":  # we are inside the PE Sections section
-                        title = line.split(':')[1].strip()
-                    else:
-                        field_name=field_name[:-1]
+                    if title!="" and  line.startswith(title):       #add dll functions imported to the feature_dictionary
+                        dll=line.split()[0]
                         dict_mutex.lock()
-                        if field_name in features_dictionary:
-                            print(field_name)
-                        features_dictionary[title+"_"+field_name] = value
+                        if dll in features_dictionary:
+                            print(dll)
+                        features_dictionary[dll] = 1
                         dict_mutex.unlock()
+
+                    match = re.findall(hex_pattern, line)
+                    if match:
+                        if len(match)>=3:
+                            field_name, value = line.split()[2], match[2]
+                            #value = int(value, 16)  or   value = hex_to_int(value)
+                        else:
+                            field_name, value = line.split()[2], 0
+
+                        if field_name == "Name:" and title == "IMAGE_SECTION_HEADER":  # we are inside the PE Sections section
+                            title = line.split(':')[1].strip()
+                        else:
+                            field_name=field_name[:-1]
+                            dict_mutex.lock()
+                            if field_name in features_dictionary:
+                                print(field_name)
+                            features_dictionary[title+"_"+field_name] = value
+                            dict_mutex.unlock()
 
         except Exception as e:
             error_message = f"Pefile Error: {e.args[0]}"
@@ -202,7 +213,6 @@ def perform_static_analysis():
     thread_exiftool.join()
 
 file_path= r"C:\Users\dunca\Desktop\a.exe"
-#file_path=r"C:\MatLab install\bin\matlab.exe"
 
 quoted_file_path = '"{}"'.format(file_path)
 
