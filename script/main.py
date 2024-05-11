@@ -9,6 +9,9 @@ from collections import Counter
 import pefile
 from PyQt5.QtCore import QMutex
 
+"""
+This is the main script
+"""
 
 def run_exiftool(file_path):
      """
@@ -205,22 +208,23 @@ def perform_static_analysis(file_path):
     thread_exiftool.start()
 
     thread_pefile.join()
+    print("PEfile done")
     thread_floss.join()
+    print("Floss done")
     thread_dependency.join()
+    print("Dependency done")
     thread_exiftool.join()
+    print("Exiftool done")
 
+def write_dicts_to_csv(file_path, dictionary):
 
-def write_dicts_to_csv(file_path, dictionaries):
-    # Extract all unique keys from the dictionaries
-    fieldnames = set().union(*dictionaries)
+    fieldnames = dictionary.keys()
 
     with open(file_path, 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-        writer.writeheader()  # Write the header row with all unique keys
-
-        for dictionary in dictionaries:
-            writer.writerow(dictionary)
+        writer.writeheader()
+        writer.writerow(dictionary)
 
 
 
@@ -230,28 +234,41 @@ error_queue=queue.Queue()
 
 
 directory_path=r"C:\Users\dunca\Desktop\a"
-output_file="output.csv"
-dictionaries = []
 
-with open(output_file, 'w') as file:
-    file.truncate(0)
 
-for filename in os.listdir(directory_path):
+
+file_list=os.listdir(directory_path)
+
+total=len(file_list)
+cnt=1
+for filename in file_list:
+    print("///////////////////////////// \n")
+    print("Working on " + filename)
+    print(str(cnt)+"/" + str(total))
+    cnt+=1
+
+    output_file_path = os.path.join(r"C:\Users\dunca\Desktop\output", filename + "_output.csv")
+
     features_dictionary = {}
     file_path = os.path.join(directory_path, filename)
     quoted_file_path = '"{}"'.format(file_path)
     perform_static_analysis(quoted_file_path)
 
     error_message = ""
-    while not error_queue.empty():
-        error_message += error_queue.get().strip() + '\n'
-    print(error_message)
+    if not error_queue.empty():
+        while not error_queue.empty():
+            error_message += error_queue.get().strip() + '\n'
+        print(error_message)
+    else:
+        with open(output_file_path, 'w+') as file:
+            file.truncate(0)
 
-    dictionaries.append(features_dictionary)
+
+        write_dicts_to_csv(output_file_path, features_dictionary)
 
     print(filename + " done")
 
-write_dicts_to_csv(output_file, dictionaries)
+
 
 
 

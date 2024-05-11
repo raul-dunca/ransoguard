@@ -1,7 +1,9 @@
 import csv
 import queue
+import re
 import subprocess
 import threading
+from collections import Counter
 
 import pefile
 from PyQt5.QtCore import Qt, QFileInfo, pyqtSlot, pyqtSignal, QPropertyAnimation, QEasingCurve, QMutex, QTimer
@@ -142,6 +144,19 @@ class MainScreen(QDialog):
         self.changing_label.setText(self.messages[self.current_message_index])
         self.current_message_index = (self.current_message_index + 1) % len(self.messages)
 
+    def write_dict_to_csv(self):
+
+        fieldnames = self.features_dictionary.keys()
+
+        with open("output.csv", 'w+', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerow(self.features_dictionary)
+
+    def write_dict_to_text(self):
+        with open("output.txt", 'w+') as file:
+            for key, value in self.features_dictionary.items():
+                file.write(f"{key}: {value}\n")
 
     def perform_static_analysis(self,file_path):
         """
@@ -166,8 +181,56 @@ class MainScreen(QDialog):
         file_path=file_path.strip('"')          #necessary bcs file_path is quoted (in case it has space) byt pefile takes care of that case already
         try:
             pe = pefile.PE(file_path)
-            with open(output_file, "w") as f:
-                f.write(str(pe))
+            #with open(output_file, "w") as f:
+            #    f.write(str(pe))
+
+            output = str(pe)
+            hex_pattern = r"0[xX][0-9A-Fa-f]+"
+            title = ""
+            section_name = ""
+            good_section_names = {"LOAD_CONFIG", "DOS_HEADER", "NT_HEADERS", "FILE_HEADER", "OPTIONAL_HEADER",
+                                  "PE Sections", "Directories", "Imported symbols", "TLS", ""}
+            index = 0
+            imported_symbols = []
+            for entry in pe.DIRECTORY_ENTRY_IMPORT:
+                imported_symbols.append(entry.dll.decode())  # create a imported symbols list
+
+            for line in output.strip().split('\n'):
+
+                if line.startswith("----------") and line.endswith("----------"):
+                    section_name = line.replace('-', '')
+
+                if section_name in good_section_names:
+
+                    if line.startswith("[") and line.endswith("]"):
+                        title = line[1:-1]
+
+                    if title == "IMAGE_IMPORT_DESCRIPTOR":  # we are in the Imported Symbols section
+                        title = imported_symbols[index]
+                        index += 1
+
+                    if title != "" and line.startswith(title):  # add dll functions imported to the feature_dictionary
+                        dll = line.split()[0]
+                        self.dictionary_mtx.lock()
+                        self.features_dictionary[dll] = 1
+                        self.dictionary_mtx.unlock()
+
+                    match = re.findall(hex_pattern, line)
+                    if match:
+                        if len(match) >= 3:
+                            field_name, value = line.split()[2], match[2]
+                            # value = int(value, 16)  or   value = hex_to_int(value)
+                        else:
+                            field_name, value = line.split()[2], 0
+
+                        if field_name == "Name:" and title == "IMAGE_SECTION_HEADER":  # we are inside the PE Sections section
+                            title = line.split(':')[1].strip()
+                        else:
+                            field_name = field_name[:-1]
+                            self.dictionary_mtx.lock()
+                            self.features_dictionary[title + "_" + field_name] = value
+                            self.dictionary_mtx.unlock()
+
             self.mutex.lock()
             self.update_progress.emit(25)
         except Exception as e:
@@ -232,6 +295,8 @@ class MainScreen(QDialog):
 
         if self.progressBar.value()==100:
             self.hide_loading_bar()
+            self.write_dict_to_text()
+            self.write_dict_to_csv()
         self.mutex.unlock()
 
 
@@ -241,9 +306,11 @@ class MainScreen(QDialog):
         executes floss on the file_path and error handles it
         """
 
-        command = "floss " + file_path
-        with open ("output_floss",'w') as f:
-            result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.PIPE)
+        command = "floss -L -q " + file_path
+        #with open ("output_floss",'w') as f:
+        #    result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.PIPE)
+
+        result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         if result.returncode !=0:
             error_message = f"Floss Error: failed to analyze sample"
@@ -251,6 +318,14 @@ class MainScreen(QDialog):
             self.error_queue.put(error_message)
             self.error_sig.emit(2)
         else:
+            output = result.stdout.decode('utf-8')
+            self.dictionary_mtx.lock()
+            lines = ["str_" + line.strip() for line in output.split('\n') if
+                     line.strip() not in self.features_dictionary]
+            string_counter = Counter(lines)
+            self.features_dictionary.update(string_counter)
+            self.dictionary_mtx.unlock()
+
             self.mutex.lock()
             self.update_progress.emit(25)
 
@@ -260,8 +335,10 @@ class MainScreen(QDialog):
         """
 
         command = "Dependencies -modules " + file_path
-        with open("output_dep", 'w') as f:
-            result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.PIPE)
+        #with open("output_dep", 'w') as f:
+        #    result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.PIPE)
+
+        result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         if result.stderr:
             error_message = f"Dependencies Error: {result.stderr.decode('utf-8')}"
@@ -269,26 +346,29 @@ class MainScreen(QDialog):
             self.error_queue.put(error_message)
             self.error_sig.emit(3)
         else:
+            output = result.stdout.decode('utf-8')
+            lines = output.strip().split('\n')
+            for i in range(1,len(lines)):
+                line=lines[i]
+                parts = line.split('] ')
+                if len(parts) > 1:
+                    dll_info = parts[1].split(' : ')
+                    if len(dll_info)==2:
+                        dll=dll_info[0].strip()
+                        self.dictionary_mtx.lock()
+                        self.features_dictionary[dll] = 1
+                        self.dictionary_mtx.unlock()
+                    elif len(dll_info)==1:
+                        dll=dll_info[0][:-1].strip()
+                        self.dictionary_mtx.lock()
+                        self.features_dictionary[dll] = 1
+                        self.dictionary_mtx.unlock()
+                    else:
+                        print("WHAT happened??????? Dependency error??")
+
+
             self.mutex.lock()
             self.update_progress.emit(25)
-
-    # def run_exiftool(self,file_path):
-    #     """
-    #     executes exiftool on the file_path and error handles it
-    #     """
-    #
-    #     command = "exiftool " + file_path
-    #     with open("output_exiftool", 'w') as f:
-    #         result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.DEVNULL)
-    #
-    #     if result.stderr:
-    #         error_message = f"Exiftool Error: {result.stderr.decode('utf-8')}"
-    #         self.error_mtx.lock()
-    #         self.error_queue.put(error_message)
-    #         self.error_sig.emit(4)
-    #     else:
-    #         self.mutex.lock()
-    #         self.update_progress.emit(25)
 
 
     def run_exiftool(self,file_path):
@@ -298,6 +378,7 @@ class MainScreen(QDialog):
 
         command = "exiftool " + file_path
         #with open("output_exiftool", 'w') as f:
+            #result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.DEVNULL)
 
         result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 
@@ -309,11 +390,19 @@ class MainScreen(QDialog):
         else:
             output = result.stdout.decode('utf-8')
 
-            self.dictionary_mtx.lock()
+
             for line in output.strip().split('\n'):
                 key, value = line.split(':', 1)
+                if key.strip() == "Directory":
+                    continue
+                elif key.strip() == "File Name":
+                    continue
+                elif key.strip() == "ExifTool Version Number":
+                    continue
+
+                self.dictionary_mtx.lock()
                 self.features_dictionary[key.strip()] = value.strip()
-            self.dictionary_mtx.unlock()
+                self.dictionary_mtx.unlock()
 
             self.mutex.lock()
             self.update_progress.emit(25)
@@ -343,6 +432,3 @@ class MainScreen(QDialog):
 
     def button_leave(self, event, label):
         label.setStyleSheet("")
-
-
-
