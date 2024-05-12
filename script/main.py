@@ -2,6 +2,7 @@ import csv
 import os
 import queue
 import re
+import shutil
 import subprocess
 import threading
 from collections import Counter
@@ -233,9 +234,9 @@ dict_mutex=QMutex()
 error_queue=queue.Queue()
 
 
-directory_path=r"C:\Users\dunca\Desktop\a"
+directory_path=r"C:\Users\dunca\Desktop\b"
 
-
+destination_dir=r"C:\Users\dunca\Desktop\done_samples"
 
 file_list=os.listdir(directory_path)
 
@@ -259,12 +260,14 @@ for filename in file_list:
         while not error_queue.empty():
             error_message += error_queue.get().strip() + '\n'
         print(error_message)
+
+        os.remove(file_path)                                #delete non PE files
     else:
         with open(output_file_path, 'w+') as file:
             file.truncate(0)
-
-
         write_dicts_to_csv(output_file_path, features_dictionary)
+        destination_file_path=os.path.join(destination_dir, filename)
+        shutil.copy(file_path, destination_file_path)                   #copy done files to a dictionary
 
     print(filename + " done")
 
