@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import threading
 from collections import Counter
-
+import concurrent.futures
 import pefile
 from PyQt5.QtCore import QMutex
 
@@ -66,67 +66,82 @@ def run_exiftool(file_path):
             features_dictionary[key.strip()]=value
             dict_mutex.unlock()
 
-def run_floss(file_path):
+def run_floss(file_path,timeout):
         """
         executes floss on the file_path and error handles it
         """
 
         command = "floss -L -q " + file_path
 
-        result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        if result.returncode !=0:
-            error_message = f"Floss Error: failed to analyze sample"
+        try:
+            result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,timeout=timeout)
+
+            if result.returncode !=0:
+                error_message = f"Floss Error: failed to analyze sample"
+                error_mtx.lock()
+                error_queue.put(error_message)
+                error_mtx.unlock()
+            else:
+                output = result.stdout.decode('utf-8')
+
+                dict_mutex.lock()
+                lines = ["str_"+line.strip() for line in output.split('\n') if line.strip() not in features_dictionary]
+                string_counter = Counter(lines)
+                features_dictionary.update(string_counter)
+                dict_mutex.unlock()
+        except subprocess.TimeoutExpired:
+            error_message = f"Floss Error: Timeout occurred while analyzing {file_path}"
             error_mtx.lock()
             error_queue.put(error_message)
             error_mtx.unlock()
-        else:
-            output = result.stdout.decode('utf-8')
 
-            dict_mutex.lock()
-            lines = ["str_"+line.strip() for line in output.split('\n') if line.strip() not in features_dictionary]
-            string_counter = Counter(lines)
-            features_dictionary.update(string_counter)
-            dict_mutex.unlock()
-
-def run_dependency(file_path):
+def run_dependency(file_path,timeout):
         """
         executes Dependencies on the file_path and error handles it
         """
 
         command = "Dependencies -modules " + file_path
         #with open("output_dep", 'w+') as f:
-        result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        if result.stderr:
-            error_message = f"Dependencies Error: {result.stderr.decode('utf-8')}"
+        try:
+            result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
+
+            if result.stderr:
+                error_message = f"Dependencies Error: {result.stderr.decode('utf-8')}"
+                error_mtx.lock()
+                error_queue.put(error_message)
+                error_mtx.unlock()
+            else:
+                output = result.stdout.decode('utf-8')
+                lines = output.strip().split('\n')
+                for i in range(1,len(lines)):
+                    line=lines[i]
+                    parts = line.split('] ')
+                    if len(parts) > 1:
+                        dll_info = parts[1].split(' : ')
+                        if len(dll_info)==2:
+                            dll=dll_info[0].strip()
+                            dict_mutex.lock()
+                            if dll in features_dictionary:
+                                print(dll)
+                            features_dictionary[dll] = 1
+                            dict_mutex.unlock()
+                        elif len(dll_info)==1:
+                            dll=dll_info[0][:-1].strip()
+                            dict_mutex.lock()
+                            if dll in features_dictionary:
+                                print(dll)
+                            features_dictionary[dll] = 1
+                            dict_mutex.unlock()
+                        else:
+                            print("WHAT happened??????? Dependency error??")
+
+        except subprocess.TimeoutExpired:
+            error_message = f"Dependencies Error: Timeout occurred while analyzing {file_path}"
             error_mtx.lock()
             error_queue.put(error_message)
             error_mtx.unlock()
-        else:
-            output = result.stdout.decode('utf-8')
-            lines = output.strip().split('\n')
-            for i in range(1,len(lines)):
-                line=lines[i]
-                parts = line.split('] ')
-                if len(parts) > 1:
-                    dll_info = parts[1].split(' : ')
-                    if len(dll_info)==2:
-                        dll=dll_info[0].strip()
-                        dict_mutex.lock()
-                        if dll in features_dictionary:
-                            print(dll)
-                        features_dictionary[dll] = 1
-                        dict_mutex.unlock()
-                    elif len(dll_info)==1:
-                        dll=dll_info[0][:-1].strip()
-                        dict_mutex.lock()
-                        if dll in features_dictionary:
-                            print(dll)
-                        features_dictionary[dll] = 1
-                        dict_mutex.unlock()
-                    else:
-                        print("WHAT happened??????? Dependency error??")
 
 def hex_to_int(hex_string):
     # Remove the '0x' prefix
@@ -216,8 +231,8 @@ def run_pefile(file_path):
 
 def perform_static_analysis(file_path):
     thread_pefile = threading.Thread(target=run_pefile, args=(file_path,))
-    thread_floss = threading.Thread(target=run_floss, args=(file_path,))
-    thread_dependency = threading.Thread(target=run_dependency, args=(file_path,))
+    thread_floss = threading.Thread(target=run_floss, args=(file_path,600))                      #wait 10 minutes max for Floss
+    thread_dependency = threading.Thread(target=run_dependency, args=(file_path,900))            #wait 15 minutes max for Dependencies
     thread_exiftool = threading.Thread(target=run_exiftool, args=(file_path,))
 
     thread_pefile.start()
@@ -233,6 +248,9 @@ def perform_static_analysis(file_path):
     print("Dependency done")
     thread_exiftool.join()
     print("Exiftool done")
+
+
+
 
 def write_dicts_to_csv(file_path, dictionary):
 
@@ -278,7 +296,7 @@ for filename in file_list:
             error_message += error_queue.get().strip() + '\n'
         print(error_message)
 
-        os.remove(file_path)                                #delete non PE files
+    #    os.remove(file_path)                                #delete non PE files
     else:
         with open(output_file_path, 'w+') as file:
             file.truncate(0)
