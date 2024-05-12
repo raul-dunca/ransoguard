@@ -24,7 +24,6 @@ def run_exiftool(file_path):
     
 
      if result.stderr:
-         print("err")
          error_message = f"Exiftool Error: {result.stderr.decode('utf-8')}"
          error_mtx.lock()
          error_queue.put(error_message)
@@ -33,12 +32,30 @@ def run_exiftool(file_path):
         output = result.stdout.decode('utf-8')
         for line in output.strip().split('\n'):
             key,value = line.split(':',1)
-            if key.strip()=="Directory":
+            key=key.strip()
+            value=value.strip()
+            if key.strip()=="ExifTool Version Number":
                 continue
-            elif key.strip()=="File Name":
-                continue
-            elif key.strip()=="ExifTool Version Number":
-                continue
+
+            try:
+                value = int(value)
+            except ValueError:
+                try:
+                    value = float(value)
+                except ValueError:
+                    # Handle special case for file size
+                    if key.lower() == 'file size':
+                        value, unit = value.split()
+                        if unit.lower() == 'kb':
+                            value = float(value)
+                        elif unit.lower() == 'bytes':
+                            value = float(value) * 1024
+                        else:
+                            print("Exiftool File size in " + unit.lower())
+                    else:
+                        continue  # Skip if value is not int or float
+
+
 
             dict_mutex.lock()
 
@@ -46,7 +63,7 @@ def run_exiftool(file_path):
                 print(key)
 
 
-            features_dictionary[key.strip()]=value.strip()
+            features_dictionary[key.strip()]=value
             dict_mutex.unlock()
 
 def run_floss(file_path):
@@ -175,7 +192,7 @@ def run_pefile(file_path):
                     match = re.findall(hex_pattern, line)
                     if match:
                         if len(match)>=3:
-                            field_name, value = line.split()[2], match[2]
+                            field_name, value = line.split()[2], int(match[2], 16)
                             #value = int(value, 16)  or   value = hex_to_int(value)
                         else:
                             field_name, value = line.split()[2], 0
