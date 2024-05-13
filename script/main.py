@@ -16,9 +16,9 @@ def run_exiftool(file_path):
      """
      executes exiftool on the file_path and error handles it
      """
-     command = "exiftool " + file_path
+     command = "exiftool -n " + file_path
 
-     result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+     result=subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     
 
      if result.stderr:
@@ -41,16 +41,6 @@ def run_exiftool(file_path):
                 try:
                     value = float(value)
                 except ValueError:
-                    # Handle special case for file size
-                    if key.lower() == 'file size':
-                        value, unit = value.split()
-                        if unit.lower() == 'kb':
-                            value = float(value)
-                        elif unit.lower() == 'bytes':
-                            value = float(value) * 1024
-                        else:
-                            print("Exiftool File size in " + unit.lower())
-                    else:
                         continue  # Skip if value is not int or float
 
 
@@ -73,7 +63,7 @@ def run_floss(file_path,timeout):
 
 
         try:
-            result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,timeout=timeout)
+            result=subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,timeout=timeout)
 
             if result.returncode !=0:
                 error_message = f"Floss Error: failed to analyze sample"
@@ -103,7 +93,7 @@ def run_dependency(file_path,timeout):
         #with open("output_dep", 'w+') as f:
 
         try:
-            result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
+            result=subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
 
             if result.stderr:
                 error_message = f"Dependencies Error: {result.stderr.decode('utf-8')}"
@@ -229,8 +219,8 @@ def run_pefile(file_path):
 
 def perform_static_analysis(file_path):
     thread_pefile = threading.Thread(target=run_pefile, args=(file_path,))
-    thread_floss = threading.Thread(target=run_floss, args=(file_path,600))                      #wait 10 minutes max for Floss
-    thread_dependency = threading.Thread(target=run_dependency, args=(file_path,900))            #wait 15 minutes max for Dependencies
+    thread_floss = threading.Thread(target=run_floss, args=(file_path,60))                      #wait 10 minutes max for Floss
+    thread_dependency = threading.Thread(target=run_dependency, args=(file_path,60))            #wait 15 minutes max for Dependencies
     thread_exiftool = threading.Thread(target=run_exiftool, args=(file_path,))
 
     thread_pefile.start()
@@ -254,7 +244,7 @@ def write_dicts_to_csv(file_path, dictionary):
 
     fieldnames = dictionary.keys()
 
-    with open(file_path, 'w', newline='') as csvfile:
+    with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
         writer.writeheader()
