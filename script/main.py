@@ -6,9 +6,7 @@ import shutil
 import subprocess
 import threading
 from collections import Counter
-import concurrent.futures
 import pefile
-from PyQt5.QtCore import QMutex
 
 """
 This is the main script
@@ -25,9 +23,9 @@ def run_exiftool(file_path):
 
      if result.stderr:
          error_message = f"Exiftool Error: {result.stderr.decode('utf-8')}"
-         error_mtx.lock()
+         error_mtx.acquire()
          error_queue.put(error_message)
-         error_mtx.unlock()
+         error_mtx.release()
      else:
         output = result.stdout.decode('utf-8')
         for line in output.strip().split('\n'):
@@ -57,14 +55,14 @@ def run_exiftool(file_path):
 
 
 
-            dict_mutex.lock()
+            dict_mutex.acquire()
 
             if key.strip() in features_dictionary:
                 print(key)
 
 
             features_dictionary[key.strip()]=value
-            dict_mutex.unlock()
+            dict_mutex.release()
 
 def run_floss(file_path,timeout):
         """
@@ -79,22 +77,22 @@ def run_floss(file_path,timeout):
 
             if result.returncode !=0:
                 error_message = f"Floss Error: failed to analyze sample"
-                error_mtx.lock()
+                error_mtx.acquire()
                 error_queue.put(error_message)
-                error_mtx.unlock()
+                error_mtx.release()
             else:
                 output = result.stdout.decode('utf-8')
 
-                dict_mutex.lock()
+                dict_mutex.acquire()
                 lines = ["str_"+line.strip() for line in output.split('\n') if line.strip() not in features_dictionary]
                 string_counter = Counter(lines)
                 features_dictionary.update(string_counter)
-                dict_mutex.unlock()
+                dict_mutex.release()
         except subprocess.TimeoutExpired:
             error_message = f"Floss Error: Timeout occurred while analyzing {file_path}"
-            error_mtx.lock()
+            error_mtx.acquire()
             error_queue.put(error_message)
-            error_mtx.unlock()
+            error_mtx.release()
 
 def run_dependency(file_path,timeout):
         """
@@ -109,9 +107,9 @@ def run_dependency(file_path,timeout):
 
             if result.stderr:
                 error_message = f"Dependencies Error: {result.stderr.decode('utf-8')}"
-                error_mtx.lock()
+                error_mtx.acquire()
                 error_queue.put(error_message)
-                error_mtx.unlock()
+                error_mtx.release()
             else:
                 output = result.stdout.decode('utf-8')
                 lines = output.strip().split('\n')
@@ -122,26 +120,26 @@ def run_dependency(file_path,timeout):
                         dll_info = parts[1].split(' : ')
                         if len(dll_info)==2:
                             dll=dll_info[0].strip()
-                            dict_mutex.lock()
+                            dict_mutex.acquire()
                             if dll in features_dictionary:
                                 print(dll)
                             features_dictionary[dll] = 1
-                            dict_mutex.unlock()
+                            dict_mutex.release()
                         elif len(dll_info)==1:
                             dll=dll_info[0][:-1].strip()
-                            dict_mutex.lock()
+                            dict_mutex.acquire()
                             if dll in features_dictionary:
                                 print(dll)
                             features_dictionary[dll] = 1
-                            dict_mutex.unlock()
+                            dict_mutex.release()
                         else:
                             print("WHAT happened??????? Dependency error??")
 
         except subprocess.TimeoutExpired:
             error_message = f"Dependencies Error: Timeout occurred while analyzing {file_path}"
-            error_mtx.lock()
+            error_mtx.acquire()
             error_queue.put(error_message)
-            error_mtx.unlock()
+            error_mtx.release()
 
 def hex_to_int(hex_string):
     # Remove the '0x' prefix
@@ -198,11 +196,11 @@ def run_pefile(file_path):
 
                     if title!="" and  line.startswith(title):       #add dll functions imported to the feature_dictionary
                         dll=line.split()[0]
-                        dict_mutex.lock()
+                        dict_mutex.acquire()
                         if dll in features_dictionary:
                             print(dll)
                         features_dictionary[dll] = 1
-                        dict_mutex.unlock()
+                        dict_mutex.release()
 
                     match = re.findall(hex_pattern, line)
                     if match:
@@ -216,17 +214,17 @@ def run_pefile(file_path):
                             title = line.split(':')[1].strip()
                         else:
                             field_name=field_name[:-1]
-                            dict_mutex.lock()
+                            dict_mutex.acquire()
                             if field_name in features_dictionary:
                                 print(field_name)
                             features_dictionary[title+"_"+field_name] = value
-                            dict_mutex.unlock()
+                            dict_mutex.release()
 
         except Exception as e:
             error_message = f"Pefile Error: {e.args[0]}"
-            error_mtx.lock()
+            error_mtx.acquire()
             error_queue.put(error_message)
-            error_mtx.unlock()
+            error_mtx.release()
 
 
 def perform_static_analysis(file_path):
@@ -264,8 +262,9 @@ def write_dicts_to_csv(file_path, dictionary):
 
 
 
-error_mtx=QMutex()
-dict_mutex=QMutex()
+
+error_mtx= threading.Lock()
+dict_mutex= threading.Lock()
 error_queue=queue.Queue()
 
 
