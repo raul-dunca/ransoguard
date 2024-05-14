@@ -44,12 +44,10 @@ def run_exiftool(file_path):
                         continue  # Skip if value is not int or float
 
 
-
             dict_mutex.acquire()
 
             if key.strip() in features_dictionary:
                 print(key)
-
 
             features_dictionary[key.strip()]=value
             dict_mutex.release()
@@ -123,7 +121,8 @@ def run_dependency(file_path,timeout):
                             features_dictionary[dll] = 1
                             dict_mutex.release()
                         else:
-                            print("WHAT happened??????? Dependency error??")
+                            print("WHAT happened??????? Dependency error??\n")
+
 
         except subprocess.TimeoutExpired:
             error_message = f"Dependencies Error: Timeout occurred while analyzing {file_path}"
@@ -255,6 +254,7 @@ def write_dicts_to_csv(file_path, dictionary):
 
 error_mtx= threading.Lock()
 dict_mutex= threading.Lock()
+log_mutex= threading.Lock()
 error_queue=queue.Queue()
 
 
@@ -266,10 +266,18 @@ file_list=os.listdir(directory_path)
 
 total=len(file_list)
 cnt=1
+
+with open("logs.txt", 'w+') as file:
+    file.truncate(0)
+
 for filename in file_list:
+
     print("///////////////////////////// \n")
     print("Working on " + filename)
     print(str(cnt)+"/" + str(total))
+
+    with open("logs.txt", 'a') as f:
+        f.write(f"{filename}\n")
     cnt+=1
 
     output_file_path = os.path.join(r"C:\Users\dunca\Desktop\output", filename + "_output.csv")
@@ -283,6 +291,7 @@ for filename in file_list:
     if not error_queue.empty():
         while not error_queue.empty():
             error_message += error_queue.get().strip() + '\n'
+
         print(error_message)
 
     #    os.remove(file_path)                                #delete non PE files
