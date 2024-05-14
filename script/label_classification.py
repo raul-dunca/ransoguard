@@ -7,9 +7,12 @@ import time
 import requests
 import os
 
+from dotenv import load_dotenv
+
 """
 This script is used to give a label for a sample
 """
+
 
 def run_avclass(file_path):
     """
@@ -95,8 +98,8 @@ def main():
         file_path = os.path.join(directory_path, filename)
 
         #quoted_file_path = '"{}"'.format(file_path)
-
-        api_key = '0c6b0c7a36bff8721eff8a88670fed45d35da449495e11906adcf2c0b6579f2d'
+        load_dotenv()
+        api_key = os.environ.get("API_KEY")
 
         resource = scan_file_with_virustotal(file_path, api_key)
 
