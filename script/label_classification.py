@@ -34,15 +34,12 @@ def run_avclass(file_path):
         else:
             right_side.append('')
 
-
         if right_side[0]=='-\t[]':
             right_side[0]='[]'
-
         special_characters = ['\\', '/', ':', '*', '?', '"', '<', '>', '|']
         label=right_side[0]
         for char in special_characters:
             label = label.replace(char, '')                         #delete unallowed chars in directory names
-
 
         return left_side[0], label
 
@@ -64,7 +61,6 @@ def get_scan_report(file_path, api_key):
     params = {'apikey': api_key, 'resource': file_path}
     response = requests.get(url, params=params)
     return response.json()
-
 
 
 def handle_rate_limit(last_call_time):                      #for the 4 lookups/min limition on virustotal
