@@ -74,7 +74,7 @@ def main():
 
 
             if signiture is None:
-                print("Error: " +filename +" " + lable)
+                print(f"Error: {filename} {lable}")
             else:
                 if lable not in label_counter:
                     label_counter[lable]=1
@@ -86,7 +86,8 @@ def main():
 
                 destination_file_path = os.path.join(lable_dir, filename)
                 shutil.copy(file_path, destination_file_path)
-
+        else:
+            print (f"Error: {output_file_path} does not exists !")
     print(label_counter)
 
 
