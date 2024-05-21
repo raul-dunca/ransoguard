@@ -7,25 +7,19 @@ Given 2 directories combine the matching name csv files into one
 
 
 def combine_csv(folder1, folder2, output_folder):
-    # Get list of files in folder1 and folder2
     files1 = os.listdir(folder1)
     files2 = os.listdir(folder2)
 
-    # Iterate through files in folder1
     for file1 in files1:
-        # Check if file1 has a corresponding file in folder2
         file1_name, file1_ext = os.path.splitext(file1)
         file2_name = file1_name.replace("_output", "_dyn_output") + ".csv"
         file2_path = os.path.join(folder2, file2_name)
         if os.path.isfile(file2_path):
-            # Read both CSV files
             df1 = pd.read_csv(os.path.join(folder1, file1))
             df2 = pd.read_csv(file2_path)
 
-            # Concatenate the dataframes horizontally (side by side)
             combined_df = pd.concat([df1, df2], axis=1)
 
-            # Write the combined dataframe to a new CSV file
             combined_file_name = file1_name + "_final_output.csv"
             combined_file_path = os.path.join(output_folder, combined_file_name)
             combined_df.to_csv(combined_file_path, index=False)
@@ -35,8 +29,8 @@ def combine_csv(folder1, folder2, output_folder):
 
 
 # Example usage
-folder1 = r"C:\Users\dunca\Desktop\output"
-folder2 = r"C:\Users\dunca\Desktop\output_dyn"
-output_folder = r"C:\Users\dunca\Desktop\final_output"
+folder1 = r"C:\Users\dunca\Desktop\csv_output"
+folder2 = r"C:\Users\dunca\Desktop\dyn_output"
+output_folder = r"C:\Users\dunca\Desktop\fin_output"
 
 combine_csv(folder1, folder2, output_folder)
