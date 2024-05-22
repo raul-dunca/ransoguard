@@ -14,6 +14,8 @@ from database.DatabaseManager import DatabaseManager
 
 app = QApplication(sys.argv)
 widget = QStackedWidget()
+widget.setWindowTitle('RansoGuard')
+
 database= DatabaseManager()
 hasher=argon2.PasswordHasher()
 
@@ -25,6 +27,7 @@ sign_up_screen = SignUpScreen(widget, database, hasher)
 
 main_screen = MainScreen(widget)
 widget.addWidget(main_screen)
+
 
 history_screen = HistoryScreen(widget)
 widget.addWidget(history_screen)

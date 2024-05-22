@@ -1,16 +1,23 @@
 import csv
+import os
 import queue
 import re
 import subprocess
 import threading
+import time
+import pandas as pd
 from collections import Counter
 
 import pefile
+import requests
 from PyQt5.QtCore import Qt, QFileInfo, pyqtSlot, pyqtSignal, QPropertyAnimation, QEasingCurve, QMutex, QTimer
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from PyQt5.uic import loadUi
+from dotenv import load_dotenv
+import joblib
 
+from Screens.ReportScreen import ReportScreen
 from Screens.Utilities import show_error_message
 
 
@@ -32,7 +39,11 @@ class MainScreen(QDialog):
         self.init_dragndrop_label()
         self.init_buttons()
         self.init_progress_bar()
-
+        self.submit_error=False
+        self.get_best_features()
+        self.model = joblib.load('ransomware_classifier_rf.pkl')
+        self.report_windows = []
+        self.file_in_analysis=""
 
     def init_progress_bar(self):
         self.progressBar.hide()
@@ -97,13 +108,26 @@ class MainScreen(QDialog):
             else:
                 true_path=file_path
             quoted_file_path = '"{}"'.format(true_path)
-            self.perform_static_analysis(quoted_file_path)
+            self.file_in_analysis = os.path.basename(true_path)
+            self.perform_analysis(quoted_file_path)
 
     def browser_files(self):
         file_path, _ = QFileDialog.getOpenFileName(self,"Open File","c:\\","All Files (*)")
         if file_path:
             quoted_file_path = '"{}"'.format(file_path)
-            self.perform_static_analysis(quoted_file_path)
+            self.file_in_analysis = os.path.basename(file_path)
+            self.perform_analysis(quoted_file_path)
+
+    def get_best_features(self):
+        self.best_features=set()
+
+        with open("best_features.txt", 'r') as file:
+            lines = file.readlines()
+
+        for line in lines:
+            parts = line.split()
+            name = parts[1].strip()
+            self.best_features.add(name)
 
 
     def show_loading_bar(self):
@@ -147,18 +171,19 @@ class MainScreen(QDialog):
     def write_dict_to_csv(self):
 
         fieldnames = self.features_dictionary.keys()
-
-        with open("output.csv", 'w+', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerow(self.features_dictionary)
-
+        try:
+            with open("output.csv", 'w+', newline='', encoding='utf-8') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerow(self.features_dictionary)
+        except Exception as e:
+            print(e)
     def write_dict_to_text(self):
         with open("output.txt", 'w+') as file:
             for key, value in self.features_dictionary.items():
                 file.write(f"{key}: {value}\n")
 
-    def perform_static_analysis(self,file_path):
+    def perform_analysis(self,file_path):
         """
         Perform static analysis on file_path, it generates 4 threads 1 for each command (pefile,floss,Dependency,exiftool).
         """
@@ -166,11 +191,13 @@ class MainScreen(QDialog):
         self.error=False
         thread_pefile = threading.Thread(target=self.run_pefile,args=(file_path,))
         thread_floss= threading.Thread(target=self.run_floss,args=(file_path,))
-        thread_dependency=threading.Thread(target=self.run_dependency,args=(file_path,))
+        thread_dynamic=threading.Thread(target=self.run_dynamic,args=(file_path,))
+        #thread_dependency=threading.Thread(target=self.run_dependency,args=(file_path,))
         thread_exiftool=threading.Thread(target=self.run_exiftool,args=(file_path,))
         thread_pefile.start()
         thread_floss.start()
-        thread_dependency.start()
+        thread_dynamic.start()
+        #thread_dependency.start()
         thread_exiftool.start()
 
     def run_pefile(self,file_path):
@@ -218,7 +245,7 @@ class MainScreen(QDialog):
                     match = re.findall(hex_pattern, line)
                     if match:
                         if len(match) >= 3:
-                            field_name, value = line.split()[2], match[2]
+                            field_name, value = line.split()[2], int(match[2], 16)
                             # value = int(value, 16)  or   value = hex_to_int(value)
                         else:
                             field_name, value = line.split()[2], 0
@@ -239,6 +266,15 @@ class MainScreen(QDialog):
             self.error_queue.put(error_message)
             self.error_sig.emit(1)
 
+    def show_errors(self):
+        error_message = ""
+        while not self.error_queue.empty():
+            error_message += self.error_queue.get().strip() + '\n'
+        self.hide_loading_bar()
+
+        show_error_message(error_message)
+
+
     @pyqtSlot(int)
     def analysis_error(self,id):
         """
@@ -250,12 +286,7 @@ class MainScreen(QDialog):
         if self.error==False:           #this is to make sure that no loading animation happens in case of an error
             self.error=True
         if self.done_threads==4:
-            error_message=""
-            while not self.error_queue.empty():
-                error_message += self.error_queue.get().strip() + '\n'
-            self.hide_loading_bar()
-
-            show_error_message(error_message)
+            self.show_errors()
         self.error_mtx.unlock()
 
     @pyqtSlot(int)
@@ -282,7 +313,36 @@ class MainScreen(QDialog):
 
             self.error_mtx.lock()
             self.done_threads += 1
+            if self.done_threads==4 and self.error==True:
+                self.show_errors()
             self.error_mtx.unlock()
+
+    def clean_column_names(self,df):
+        df.columns = df.columns.str.replace(r'[^\w.]', '', regex=True)
+        df = df.loc[:, ~df.columns.duplicated()]
+        return df
+
+    def process_csv_files(self,file_path):
+
+        df = pd.read_csv(file_path)
+
+        if any(df.columns.str.contains(r'\W')):
+            df = self.clean_column_names(df)
+        df.to_csv("clean.csv", index=False)
+
+    def csv_to_dict(self):
+        with open("clean.csv", 'r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            return next(reader, {})
+
+
+    def open_sub_window(self,prediction, summary_dict):
+
+        report_window = ReportScreen(self.widget, prediction,summary_dict,self.file_in_analysis)
+        report_window.show()
+        self.report_windows.append(report_window)
+
+
 
     def animation_finished(self):
         """
@@ -291,15 +351,36 @@ class MainScreen(QDialog):
         """
         self.error_mtx.lock()
         self.done_threads += 1
+        if self.done_threads == 4 and self.error == True:
+            self.show_errors()
         self.error_mtx.unlock()
 
         if self.progressBar.value()==100:
-            self.hide_loading_bar()
-            self.write_dict_to_text()
-            self.write_dict_to_csv()
+            self.perform_prediction()
+
         self.mutex.unlock()
 
+    def perform_prediction(self):
+        self.hide_loading_bar()
+        self.write_dict_to_csv()
+        self.process_csv_files("output.csv")
 
+        cleaned_features = self.csv_to_dict()
+
+        final_dict = {}
+        for feature in self.best_features:
+            if feature in cleaned_features:
+                final_dict[feature] = cleaned_features[feature]
+            else:
+                final_dict[feature] = 0
+
+        data = pd.DataFrame(final_dict, index=[0])  # Assuming the data is a single sample
+        data = data.reindex(sorted(data.columns), axis=1)
+
+        prediction = self.model.predict(data)
+
+        sorted_dict = dict(sorted(final_dict.items()))
+        self.open_sub_window(prediction,sorted_dict)
 
     def run_floss(self,file_path):
         """
@@ -370,13 +451,154 @@ class MainScreen(QDialog):
             self.mutex.lock()
             self.update_progress.emit(25)
 
+    def submit_file(self,file_path, api_key):
+        url = "https://www.hybrid-analysis.com/api/v2/submit/file"
+        headers = {
+            "User-Agent": "Falcon Sandbox",
+            "api-key": api_key
+        }
+        data = {
+            "environment_id": 160,  # WINDOWS 10 64 bits
+            "hybrid_analysis": True,
+            "experimental_anti_evasion": True,
+            "script_logging": True,
+            "input_sample_tampering": True,
+            "network_settings": "simulated",
+            "custom_run_time": 180,
+        }
+
+        try:
+            with open(file_path, "rb") as file:
+                files = {"file": file}
+                response = requests.post(url, files=files, data=data, headers=headers)
+                if response.status_code == 201:
+                    return response.json()
+                else:
+                    return None
+        except Exception as e:
+            return None
+
+    def get_analysis_report(self,api_key, analysis_id, features_dir):
+        url = f"https://www.hybrid-analysis.com/api/v2/report/{analysis_id}/summary"
+        headers = {
+            "User-Agent": "Falcon Sandbox",
+            "api-key": api_key
+        }
+
+        try:
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+
+                json_resp = response.json()
+
+                if json_resp["total_processes"]:
+                    self.dictionary_mtx.lock()
+                    features_dir["total_processes"] = json_resp["total_processes"]
+                    self.dictionary_mtx.unlock()
+
+                for processes in json_resp["processes"]:
+                    if processes["name"]:
+                        self.dictionary_mtx.lock()
+                        features_dir["PROC_" + processes["name"]] = 1
+                        self.dictionary_mtx.unlock()
+
+                for attack in json_resp["mitre_attcks"]:
+                    if attack["tactic"]:
+                        self.dictionary_mtx.lock()
+                        features_dir[attack["tactic"]] = 1
+                        self.dictionary_mtx.unlock()
+                    if attack["technique"]:
+                        self.dictionary_mtx.lock()
+                        features_dir[attack["technique"]] = 1
+                        self.dictionary_mtx.unlock()
+                    if attack["attck_id"]:
+                        self.dictionary_mtx.lock()
+                        features_dir[attack["attck_id"]] = 1
+                        self.dictionary_mtx.unlock()
+
+                for signature in json_resp["signatures"]:
+                    if signature["name"]:
+                        self.dictionary_mtx.lock()
+                        features_dir["SIG_" + signature["name"]] = 1
+                        self.dictionary_mtx.unlock()
+                        if signature["relevance"]:
+                            self.dictionary_mtx.lock()
+                            features_dir["SIG_" + signature["name"] + "_REL"] = signature["relevance"]
+                            self.dictionary_mtx.unlock()
+                        if signature["threat_level"]:
+                            self.dictionary_mtx.lock()
+                            features_dir["SIG_" + signature["name"] + "_THRD_LVL"] = signature["threat_level"]
+                            self.dictionary_mtx.unlock()
+                return True
+            else:
+                return None
+        except Exception as e:
+            return None
+
+    def check_status(self,api_key, analysis_id):
+        url = f"https://www.hybrid-analysis.com/api/v2/report/{analysis_id}/state"
+        headers = {
+            "api-key": api_key
+        }
+
+        try:
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                resp = response.json()
+                if resp["state"] == "SUCCESS":
+                    return True
+                elif resp["state"] == "ERROR":
+                    self.submit_error=True
+                    return True
+                else:
+                    return False
+            else:
+                self.submit_error=True
+                return True
+        except Exception as e:
+            self.submit_error=True
+            return True
+
+    def run_dynamic(self, file_path):
+        """
+        executes dynamic analysis
+        """
+        file_path = file_path.strip('"')
+        load_dotenv()
+        api_key = os.environ.get("API_KEY")
+        response = self.submit_file(file_path, api_key)
+        self.submit_error=False
+        if response:
+            analysis_id=response.get("job_id")
+            while self.check_status(api_key, analysis_id) != True:
+                time.sleep(31)
+            if self.submit_error:
+                error_message = f"Dynamic Error when checking status!"
+                self.error_mtx.lock()
+                self.error_queue.put(error_message)
+                self.error_sig.emit(3)
+            else:
+                out=self.get_analysis_report(api_key, analysis_id,self.features_dictionary)
+                if out :
+                    self.mutex.lock()
+                    self.update_progress.emit(25)
+                else:
+                    error_message = f"Dynamic Error when getting report"
+                    self.error_mtx.lock()
+                    self.error_queue.put(error_message)
+                    self.error_sig.emit(3)
+        else:
+            error_message = f"Dynamic Error when Submitting"
+            self.error_mtx.lock()
+            self.error_queue.put(error_message)
+            self.error_sig.emit(3)
 
     def run_exiftool(self,file_path):
         """
         executes exiftool on the file_path and error handles it
         """
 
-        command = "exiftool " + file_path
+        command = "exiftool -n  " + file_path
         #with open("output_exiftool", 'w') as f:
             #result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.DEVNULL)
 
@@ -393,15 +615,22 @@ class MainScreen(QDialog):
 
             for line in output.strip().split('\n'):
                 key, value = line.split(':', 1)
-                if key.strip() == "Directory":
-                    continue
-                elif key.strip() == "File Name":
-                    continue
-                elif key.strip() == "ExifTool Version Number":
+                key = key.strip()
+                value = value.strip()
+                if key.strip() == "ExifTool Version Number":
                     continue
 
+                try:
+                    value = int(value)
+                except ValueError:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue                # Skip if value is not int or float
+
+
                 self.dictionary_mtx.lock()
-                self.features_dictionary[key.strip()] = value.strip()
+                self.features_dictionary[key.strip()] = value
                 self.dictionary_mtx.unlock()
 
             self.mutex.lock()
@@ -432,3 +661,9 @@ class MainScreen(QDialog):
 
     def button_leave(self, event, label):
         label.setStyleSheet("")
+
+    def closeEvent(self, event):
+        # Close all open report windows when the main window is closed
+        for report_window in self.report_windows:
+            report_window.close()
+        event.accept()
