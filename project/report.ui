@@ -10,6 +10,18 @@
     <height>700</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1050</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1050</width>
+    <height>700</height>
+   </size>
+  </property>
   <property name="focusPolicy">
    <enum>Qt::NoFocus</enum>
   </property>
@@ -94,7 +106,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color:#00000</string>
+    <string notr="true"/>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -117,7 +129,7 @@
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color:#00000</string>
+    <string notr="true"/>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
@@ -289,7 +301,7 @@ font-weight: bold;
    <property name="font">
     <font>
      <family>Century Gothic</family>
-     <pointsize>22</pointsize>
+     <pointsize>18</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>

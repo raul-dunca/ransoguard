@@ -1,10 +1,13 @@
 import csv
+import json
 import os
 import queue
 import re
 import subprocess
 import threading
 import time
+
+import numpy as np
 import pandas as pd
 from collections import Counter
 
@@ -43,7 +46,10 @@ class MainScreen(QDialog):
         self.get_best_features()
         self.model = joblib.load('ransomware_classifier_rf.pkl')
         self.report_windows = []
+        self.report_history = []
+        self.load_report_history()
         self.file_in_analysis=""
+
 
     def init_progress_bar(self):
         self.progressBar.hide()
@@ -335,13 +341,29 @@ class MainScreen(QDialog):
             reader = csv.DictReader(file)
             return next(reader, {})
 
+    def load_report_history(self):
+        try:
+            with open('report_history.json', 'r') as file:
+                loaded_data = json.load(file)
+
+            self.report_history= [(filename, np.array(malware_types), attributes) for filename, malware_types, attributes in loaded_data]
+        except FileNotFoundError:
+            self.report_history = []
+
+
+    def save_report_history(self):
+        data = [(filename, malware_types.tolist(), attributes) for filename, malware_types, attributes in self.report_history]
+        with open('report_history.json', 'w+') as file:
+            json.dump(data, file)
 
     def open_sub_window(self,prediction, summary_dict):
 
         report_window = ReportScreen(self.widget, prediction,summary_dict,self.file_in_analysis)
         report_window.show()
         self.report_windows.append(report_window)
-
+        self.report_history.append((self.file_in_analysis,prediction, summary_dict))
+        self.save_report_history()
+        self.update_histroy()
 
 
     def animation_finished(self):
@@ -570,8 +592,8 @@ class MainScreen(QDialog):
         self.submit_error=False
         if response:
             analysis_id=response.get("job_id")
-            while self.check_status(api_key, analysis_id) != True:
-                time.sleep(31)
+            while self.check_status(api_key, analysis_id) != True and not self.error:
+                time.sleep(30)
             if self.submit_error:
                 error_message = f"Dynamic Error when checking status!"
                 self.error_mtx.lock()
@@ -641,9 +663,14 @@ class MainScreen(QDialog):
         self.homeButton.setChecked(True)
         self.widget.setCurrentIndex(4)
 
+    def update_histroy(self):
+        history_screen_widget = self.widget.widget(3)
+        history_screen_widget.set_report_history(self.report_history)
+
     def go_to_history(self):
         self.homeButton.setChecked(True)
         self.widget.setCurrentIndex(3)
+        self.update_histroy()
 
     def menu_button_hovers(self):
         self.homeButton.enterEvent = lambda event: self.button_enter(event, self.homeButton, self.home_label)

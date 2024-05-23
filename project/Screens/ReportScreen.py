@@ -10,8 +10,8 @@ class ReportScreen(QDialog):
         super(ReportScreen, self).__init__()
         loadUi("report.ui", self)
         self.setWindowTitle('Report: '+filename)
-        self.tableWidget.setColumnWidth(0,400)
-        self.tableWidget.setColumnWidth(1, 520)
+        self.tableWidget.setColumnWidth(0,520)
+        self.tableWidget.setColumnWidth(1, 400)
         self.widget = widget
         self.prediction=prediction[0]
         self.features_dict=features_dict

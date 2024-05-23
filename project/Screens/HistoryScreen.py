@@ -1,6 +1,8 @@
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QListWidgetItem
 from PyQt5.uic import loadUi
+
+from Screens.ReportScreen import ReportScreen
 
 
 class HistoryScreen(QDialog):
@@ -8,6 +10,9 @@ class HistoryScreen(QDialog):
         super(HistoryScreen, self).__init__()
         loadUi("history.ui", self)
         self.widget = widget
+        self.report_history=[]
+        self.listWidget.itemClicked.connect(self.on_item_clicked)
+        self.report_windows_oppened=[]
         self.init_buttons()
 
     def init_buttons(self):
@@ -47,3 +52,26 @@ class HistoryScreen(QDialog):
 
     def button_leave(self, event, label):
         label.setStyleSheet("")
+
+    def set_report_history(self,report_history):
+        self.listWidget.clear()
+        self.report_history=report_history
+        self.populate_list_widget()
+
+    def populate_list_widget(self):
+        for tree_pair in self.report_history:
+            file_name=tree_pair[0]
+            if len(file_name)>50:
+                file_name=file_name[:50]+"..."
+            prediction=tree_pair[1]
+            item_text = f"{file_name}: {prediction[0]}"
+
+            item = QListWidgetItem(item_text)
+
+            self.listWidget.addItem(item)
+
+    def on_item_clicked(self, item):
+        index = self.listWidget.row(item)
+        report_window = ReportScreen(self.widget, self.report_history[index][1], self.report_history[index][2], self.report_history[index][0])
+        report_window.show()
+        self.report_windows_oppened.append(report_window)

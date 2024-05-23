@@ -283,9 +283,7 @@ border-top: none;
      <string/>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-
-</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string/>
@@ -307,6 +305,49 @@ border-top: none;
      <bool>true</bool>
     </property>
    </widget>
+  </widget>
+  <widget class="QListWidget" name="listWidget">
+   <property name="geometry">
+    <rect>
+     <x>35</x>
+     <y>180</y>
+     <width>980</width>
+     <height>481</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QListWidget {
+    font-family: &quot;Century Gothic&quot;;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+QListWidget::item {
+    font-family: &quot;Century Gothic&quot;;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+QListWidget::item {
+    border-bottom: 1px solid black;
+    padding: 10px; 
+}
+
+
+QListWidget::item:hover {
+    background-color: lightblue; 
+}
+
+QListWidget::item:selected {
+    background-color: lightblue; 
+	color:#000000;
+}</string>
+   </property>
+   <item>
+    <property name="text">
+     <string>New Item</string>
+    </property>
+   </item>
   </widget>
  </widget>
  <resources/>
