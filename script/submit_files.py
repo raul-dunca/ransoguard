@@ -23,12 +23,10 @@ def submit_file(file_path, api_key,filename):
     }
     data = {
         "environment_id": 160,              #WINDOWS 10 64 bits
-        "hybrid_analysis": True,
         "experimental_anti_evasion": True,
         "script_logging": True,
         "input_sample_tampering": True,
         "network_settings": "simulated",
-        "custom_run_time": 180,
     }
 
     try:
