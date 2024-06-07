@@ -214,8 +214,8 @@ class MainScreen(QDialog):
         file_path=file_path.strip('"')          #necessary bcs file_path is quoted (in case it has space) byt pefile takes care of that case already
         try:
             pe = pefile.PE(file_path)
-            #with open(output_file, "w") as f:
-            #    f.write(str(pe))
+            with open(output_file, "w") as f:
+                f.write(str(pe))
 
             output = str(pe)
             hex_pattern = r"0[xX][0-9A-Fa-f]+"
@@ -621,8 +621,8 @@ class MainScreen(QDialog):
         """
 
         command = "exiftool -n  " + file_path
-        #with open("output_exiftool", 'w') as f:
-            #result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.DEVNULL)
+        with open("output_exiftool", 'w') as f:
+            result=subprocess.run(command, shell=True, stdout=f, stderr=subprocess.DEVNULL)
 
         result=subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 

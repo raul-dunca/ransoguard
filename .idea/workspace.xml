@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="14ff3cf2-13e6-4c29-84ca-3d2b05127010" name="Changes" comment="" />
+    <list default="true" id="14ff3cf2-13e6-4c29-84ca-3d2b05127010" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/project/clean.csv" beforeDir="false" afterPath="$PROJECT_DIR$/project/clean.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/output.csv" beforeDir="false" afterPath="$PROJECT_DIR$/project/output.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/report_history.json" beforeDir="false" afterPath="$PROJECT_DIR$/project/report_history.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,7 +38,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/script" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
