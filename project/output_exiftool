@@ -1,15 +1,24 @@
 ExifTool Version Number         : 12.84
-File Name                       : ctf_quesiton.txt
-Directory                       : C:/Users/dunca/Desktop
-File Size                       : 60
-File Modification Date/Time     : 2024:03:09 17:29:51+02:00
-File Access Date/Time           : 2024:06:05 23:01:49+03:00
-File Creation Date/Time         : 2024:03:09 17:27:52+02:00
+File Name                       : c_packed.exe
+Directory                       : C:/Users/dunca/Desktop/b
+File Size                       : 42408
+File Modification Date/Time     : 2024:05:14 17:50:22+03:00
+File Access Date/Time           : 2024:06:09 00:04:09+03:00
+File Creation Date/Time         : 2024:05:16 19:20:16+03:00
 File Permissions                : 100666
-File Type                       : TXT
-File Type Extension             : TXT
-MIME Type                       : text/plain
-MIME Encoding                   : us-ascii
-Newlines                        : ..
-Line Count                      : 2
-Word Count                      : 5
+File Type                       : Win64 EXE
+File Type Extension             : EXE
+MIME Type                       : application/octet-stream
+Machine Type                    : 34404
+Time Stamp                      : 2024:04:23 15:57:24+03:00
+Image File Characteristics      : 39
+PE Type                         : 523
+Linker Version                  : 2.30
+Code Size                       : 12288
+Initialized Data Size           : 4096
+Uninitialized Data Size         : 65536
+Entry Point                     : 80832
+OS Version                      : 4.0
+Image Version                   : 0.0
+Subsystem Version               : 5.2
+Subsystem                       : 3

@@ -43,7 +43,7 @@
     <string notr="true">color:#990011</string>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Help&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -256,7 +256,7 @@ border-top: none;
      </font>
     </property>
     <property name="text">
-     <string>Settings</string>
+     <string>Help</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -283,9 +283,7 @@ border-top: none;
      <string/>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-
-</string>
+     <string notr="true"/>
     </property>
     <property name="text">
      <string/>
@@ -310,6 +308,33 @@ border-top: none;
      <bool>true</bool>
     </property>
    </widget>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>75</x>
+     <y>230</y>
+     <width>901</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Century Gothic</family>
+     <pointsize>18</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;RansoGuard utilizes a Random Forest machine learning model to predict the &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;ransomware family of a malicious file. It works by analyzing the file in &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;a hybrid approach using four different tools: floss, exiftool, pefile and&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Hybrid-Analysis API.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
   </widget>
  </widget>
  <resources/>

@@ -256,7 +256,7 @@ border-top: none;
      </font>
     </property>
     <property name="text">
-     <string>Settings</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Help&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

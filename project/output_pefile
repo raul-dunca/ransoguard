@@ -1,3 +1,13 @@
+----------Parsing Warnings----------
+
+Suspicious flags set for section 0. Both IMAGE_SCN_MEM_WRITE and IMAGE_SCN_MEM_EXECUTE are set. This might indicate a packed executable.
+
+Suspicious flags set for section 1. Both IMAGE_SCN_MEM_WRITE and IMAGE_SCN_MEM_EXECUTE are set. This might indicate a packed executable.
+
+Imported symbols contain entries typical of packed executables.
+
+Corrupt header "RUNTIME_FUNCTION" at file offset 16896. Exception: 'Data length less than expected header length.'
+
 ----------DOS_HEADER----------
 
 [IMAGE_DOS_HEADER]
@@ -30,8 +40,8 @@
 
 [IMAGE_FILE_HEADER]
 0x84       0x0   Machine:                       0x8664    
-0x86       0x2   NumberOfSections:              0xF       
-0x88       0x4   TimeDateStamp:                 0x6631E871 [Wed May  1 07:00:01 2024 UTC]
+0x86       0x2   NumberOfSections:              0x3       
+0x88       0x4   TimeDateStamp:                 0x6627B034 [Tue Apr 23 12:57:24 2024 UTC]
 0x8C       0x8   PointerToSymbolTable:          0x6E00    
 0x90       0xC   NumberOfSymbols:               0x4D0     
 0x94       0x10  SizeOfOptionalHeader:          0xF0      
@@ -44,11 +54,11 @@ Flags: IMAGE_FILE_EXECUTABLE_IMAGE, IMAGE_FILE_LARGE_ADDRESS_AWARE, IMAGE_FILE_L
 0x98       0x0   Magic:                         0x20B     
 0x9A       0x2   MajorLinkerVersion:            0x2       
 0x9B       0x3   MinorLinkerVersion:            0x1E      
-0x9C       0x4   SizeOfCode:                    0x1E00    
-0xA0       0x8   SizeOfInitializedData:         0x3E00    
-0xA4       0xC   SizeOfUninitializedData:       0xA00     
-0xA8       0x10  AddressOfEntryPoint:           0x14E0    
-0xAC       0x14  BaseOfCode:                    0x1000    
+0x9C       0x4   SizeOfCode:                    0x3000    
+0xA0       0x8   SizeOfInitializedData:         0x1000    
+0xA4       0xC   SizeOfUninitializedData:       0x10000   
+0xA8       0x10  AddressOfEntryPoint:           0x13BC0   
+0xAC       0x14  BaseOfCode:                    0x11000   
 0xB0       0x18  ImageBase:                     0x400000  
 0xB8       0x20  SectionAlignment:              0x1000    
 0xBC       0x24  FileAlignment:                 0x200     
@@ -59,9 +69,9 @@ Flags: IMAGE_FILE_EXECUTABLE_IMAGE, IMAGE_FILE_LARGE_ADDRESS_AWARE, IMAGE_FILE_L
 0xC8       0x30  MajorSubsystemVersion:         0x5       
 0xCA       0x32  MinorSubsystemVersion:         0x2       
 0xCC       0x34  Reserved1:                     0x0       
-0xD0       0x38  SizeOfImage:                   0x12000   
-0xD4       0x3C  SizeOfHeaders:                 0x400     
-0xD8       0x40  CheckSum:                      0x1BE89   
+0xD0       0x38  SizeOfImage:                   0x15000   
+0xD4       0x3C  SizeOfHeaders:                 0x200     
+0xD8       0x40  CheckSum:                      0x0       
 0xDC       0x44  Subsystem:                     0x3       
 0xDE       0x46  DllCharacteristics:            0x0       
 0xE0       0x48  SizeOfStackReserve:            0x200000  
@@ -75,119 +85,19 @@ DllCharacteristics:
 ----------PE Sections----------
 
 [IMAGE_SECTION_HEADER]
-0x188      0x0   Name:                          .text
-0x190      0x8   Misc:                          0x1DF0    
-0x190      0x8   Misc_PhysicalAddress:          0x1DF0    
-0x190      0x8   Misc_VirtualSize:              0x1DF0    
+0x188      0x0   Name:                          UPX0
+0x190      0x8   Misc:                          0x10000   
+0x190      0x8   Misc_PhysicalAddress:          0x10000   
+0x190      0x8   Misc_VirtualSize:              0x10000   
 0x194      0xC   VirtualAddress:                0x1000    
-0x198      0x10  SizeOfRawData:                 0x1E00    
-0x19C      0x14  PointerToRawData:              0x400     
+0x198      0x10  SizeOfRawData:                 0x0       
+0x19C      0x14  PointerToRawData:              0x200     
 0x1A0      0x18  PointerToRelocations:          0x0       
 0x1A4      0x1C  PointerToLinenumbers:          0x0       
 0x1A8      0x20  NumberOfRelocations:           0x0       
 0x1AA      0x22  NumberOfLinenumbers:           0x0       
-0x1AC      0x24  Characteristics:               0x60500060
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_1BYTES, IMAGE_SCN_ALIGN_2048BYTES, IMAGE_SCN_ALIGN_256BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_8BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_CODE, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_EXECUTE, IMAGE_SCN_MEM_READ
-Entropy: 6.002655 (Min=0.0, Max=8.0)
-MD5     hash: ff59d9ae552dbb96a24bd758f87ae157
-SHA-1   hash: 25846875375e08025b5fc83721ad5c21e9742205
-SHA-256 hash: c375feae02ddfd822afb60ba8f541dc5da6ab3003f75c4829542ff43469c51b7
-SHA-512 hash: 42b45f8b4aa29e4c9c8c59cbcfa66f7dda2cceec65b35ef09f7655436891cf86e648a687ee2c9cd5cbc95183d6a597997b86124b3367e0501989762d98a23575
-
-[IMAGE_SECTION_HEADER]
-0x1B0      0x0   Name:                          .data
-0x1B8      0x8   Misc:                          0xD0      
-0x1B8      0x8   Misc_PhysicalAddress:          0xD0      
-0x1B8      0x8   Misc_VirtualSize:              0xD0      
-0x1BC      0xC   VirtualAddress:                0x3000    
-0x1C0      0x10  SizeOfRawData:                 0x200     
-0x1C4      0x14  PointerToRawData:              0x2200    
-0x1C8      0x18  PointerToRelocations:          0x0       
-0x1CC      0x1C  PointerToLinenumbers:          0x0       
-0x1D0      0x20  NumberOfRelocations:           0x0       
-0x1D2      0x22  NumberOfLinenumbers:           0x0       
-0x1D4      0x24  Characteristics:               0xC0500040
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_1BYTES, IMAGE_SCN_ALIGN_2048BYTES, IMAGE_SCN_ALIGN_256BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_8BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_READ, IMAGE_SCN_MEM_WRITE
-Entropy: 0.810182 (Min=0.0, Max=8.0)
-MD5     hash: 67dbac3fbbfb2fb8df7aac60c43ab344
-SHA-1   hash: e217dfbc836f65d1fc7e14407aea6fe0757942da
-SHA-256 hash: 84469a52b6470c0e3c77f425f91498b1b9a0992c2ac95bae270e2288ab3225dd
-SHA-512 hash: ef3f2e8755bfe6abefadd57c6ce06316aa6bc20a55a18ebde80f9e0ce91dc681f4e2969b777b9792a0215ed025b39a45e1d4d44cdb1011e8c7b0d24d686955c5
-
-[IMAGE_SECTION_HEADER]
-0x1D8      0x0   Name:                          .rdata
-0x1E0      0x8   Misc:                          0x624     
-0x1E0      0x8   Misc_PhysicalAddress:          0x624     
-0x1E0      0x8   Misc_VirtualSize:              0x624     
-0x1E4      0xC   VirtualAddress:                0x4000    
-0x1E8      0x10  SizeOfRawData:                 0x800     
-0x1EC      0x14  PointerToRawData:              0x2400    
-0x1F0      0x18  PointerToRelocations:          0x0       
-0x1F4      0x1C  PointerToLinenumbers:          0x0       
-0x1F8      0x20  NumberOfRelocations:           0x0       
-0x1FA      0x22  NumberOfLinenumbers:           0x0       
-0x1FC      0x24  Characteristics:               0x40600040
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_2048BYTES, IMAGE_SCN_ALIGN_2BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_512BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_8BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_READ
-Entropy: 3.484233 (Min=0.0, Max=8.0)
-MD5     hash: a32784481d5990677970d1d10de60440
-SHA-1   hash: 13fffcebee936c438eaaa8532fdce1b103aac28c
-SHA-256 hash: f4e638d40dcaa80665e2acd6ec276d600016645a723c3820b843fd82de57cb8d
-SHA-512 hash: 98a95a8f06ec7c9a14da280959baa1bf24d13bc4ea2872dc6abfe791978a5726960ac6cb6ac7431048cb9e9d98e3d3bb95b1f9c601e2e8ee9c1fdb230897ed57
-
-[IMAGE_SECTION_HEADER]
-0x200      0x0   Name:                          .pdata
-0x208      0x8   Misc:                          0x294     
-0x208      0x8   Misc_PhysicalAddress:          0x294     
-0x208      0x8   Misc_VirtualSize:              0x294     
-0x20C      0xC   VirtualAddress:                0x5000    
-0x210      0x10  SizeOfRawData:                 0x400     
-0x214      0x14  PointerToRawData:              0x2C00    
-0x218      0x18  PointerToRelocations:          0x0       
-0x21C      0x1C  PointerToLinenumbers:          0x0       
-0x220      0x20  NumberOfRelocations:           0x0       
-0x222      0x22  NumberOfLinenumbers:           0x0       
-0x224      0x24  Characteristics:               0x40300040
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_1BYTES, IMAGE_SCN_ALIGN_256BYTES, IMAGE_SCN_ALIGN_2BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_512BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_READ
-Entropy: 2.829590 (Min=0.0, Max=8.0)
-MD5     hash: 73f61386b5d96c35994c91e6ab945d4c
-SHA-1   hash: 12a0edffa939263fafe2e39bafb2620de7fbafb8
-SHA-256 hash: f9418770a3287925413ae108b256c6854b1adb5582161d80cf96f8203a4295ef
-SHA-512 hash: 83c1dd652ce6e74fabddf94bd07905397a477ad2a0cf7664fdb3c24f29c329cda3bef1c9084c1633d69faf7004060ebf949d95a7c9b6dd771a4e49e2a1e05408
-
-[IMAGE_SECTION_HEADER]
-0x228      0x0   Name:                          .xdata
-0x230      0x8   Misc:                          0x218     
-0x230      0x8   Misc_PhysicalAddress:          0x218     
-0x230      0x8   Misc_VirtualSize:              0x218     
-0x234      0xC   VirtualAddress:                0x6000    
-0x238      0x10  SizeOfRawData:                 0x400     
-0x23C      0x14  PointerToRawData:              0x3000    
-0x240      0x18  PointerToRelocations:          0x0       
-0x244      0x1C  PointerToLinenumbers:          0x0       
-0x248      0x20  NumberOfRelocations:           0x0       
-0x24A      0x22  NumberOfLinenumbers:           0x0       
-0x24C      0x24  Characteristics:               0x40300040
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_1BYTES, IMAGE_SCN_ALIGN_256BYTES, IMAGE_SCN_ALIGN_2BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_512BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_READ
-Entropy: 2.453127 (Min=0.0, Max=8.0)
-MD5     hash: 68252708b6addbf79103c78e9d423135
-SHA-1   hash: 472e4cceed985303150479c6bde6747c68ca895a
-SHA-256 hash: ac42f15efa0039aa994cf41d1c9e886d2fb6ecacac65cb98d6d940c8c20f6041
-SHA-512 hash: 0cc31ae43215e729064cc71452416c1503cda58c6f081c11d7b1190f0e42614dffd390c54719569006347b54e6e7200812c7b1fd5ce14d6989eb3cdc4fe3e17a
-
-[IMAGE_SECTION_HEADER]
-0x250      0x0   Name:                          .bss
-0x258      0x8   Misc:                          0x980     
-0x258      0x8   Misc_PhysicalAddress:          0x980     
-0x258      0x8   Misc_VirtualSize:              0x980     
-0x25C      0xC   VirtualAddress:                0x7000    
-0x260      0x10  SizeOfRawData:                 0x0       
-0x264      0x14  PointerToRawData:              0x0       
-0x268      0x18  PointerToRelocations:          0x0       
-0x26C      0x1C  PointerToLinenumbers:          0x0       
-0x270      0x20  NumberOfRelocations:           0x0       
-0x272      0x22  NumberOfLinenumbers:           0x0       
-0x274      0x24  Characteristics:               0xC0600080
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_2048BYTES, IMAGE_SCN_ALIGN_2BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_512BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_8BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_UNINITIALIZED_DATA, IMAGE_SCN_MEM_READ, IMAGE_SCN_MEM_WRITE
+0x1AC      0x24  Characteristics:               0xE0000080
+Flags: IMAGE_SCN_CNT_UNINITIALIZED_DATA, IMAGE_SCN_MEM_EXECUTE, IMAGE_SCN_MEM_READ, IMAGE_SCN_MEM_WRITE
 Entropy: 0.000000 (Min=0.0, Max=8.0)
 MD5     hash: d41d8cd98f00b204e9800998ecf8427e
 SHA-1   hash: da39a3ee5e6b4b0d3255bfef95601890afd80709
@@ -195,184 +105,44 @@ SHA-256 hash: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 SHA-512 hash: cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e
 
 [IMAGE_SECTION_HEADER]
-0x278      0x0   Name:                          .idata
-0x280      0x8   Misc:                          0x898     
-0x280      0x8   Misc_PhysicalAddress:          0x898     
-0x280      0x8   Misc_VirtualSize:              0x898     
-0x284      0xC   VirtualAddress:                0x8000    
-0x288      0x10  SizeOfRawData:                 0xA00     
-0x28C      0x14  PointerToRawData:              0x3400    
-0x290      0x18  PointerToRelocations:          0x0       
-0x294      0x1C  PointerToLinenumbers:          0x0       
-0x298      0x20  NumberOfRelocations:           0x0       
-0x29A      0x22  NumberOfLinenumbers:           0x0       
-0x29C      0x24  Characteristics:               0xC0300040
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_1BYTES, IMAGE_SCN_ALIGN_256BYTES, IMAGE_SCN_ALIGN_2BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_512BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_READ, IMAGE_SCN_MEM_WRITE
-Entropy: 3.726209 (Min=0.0, Max=8.0)
-MD5     hash: 841d84df38249173fdc551b63320c199
-SHA-1   hash: 672dc74a7beccd7170a76e70c273313e84856673
-SHA-256 hash: 0f0d67b10c1e93adc63969b2b16dadc3fe15aad5c93f75adf69ebb2d747ea2a1
-SHA-512 hash: 3e3711beba5210c3e98513b394fed4d535ebe5690aa760377f202525e4599a5e85bc1fd89e39beeaad532139b0474224dfb2a6ac670e4a0d07f1612c6c0c09e9
+0x1B0      0x0   Name:                          UPX1
+0x1B8      0x8   Misc:                          0x3000    
+0x1B8      0x8   Misc_PhysicalAddress:          0x3000    
+0x1B8      0x8   Misc_VirtualSize:              0x3000    
+0x1BC      0xC   VirtualAddress:                0x11000   
+0x1C0      0x10  SizeOfRawData:                 0x3000    
+0x1C4      0x14  PointerToRawData:              0x200     
+0x1C8      0x18  PointerToRelocations:          0x0       
+0x1CC      0x1C  PointerToLinenumbers:          0x0       
+0x1D0      0x20  NumberOfRelocations:           0x0       
+0x1D2      0x22  NumberOfLinenumbers:           0x0       
+0x1D4      0x24  Characteristics:               0xE0000040
+Flags: IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_EXECUTE, IMAGE_SCN_MEM_READ, IMAGE_SCN_MEM_WRITE
+Entropy: 7.720692 (Min=0.0, Max=8.0)
+MD5     hash: 54a135ed4a8f66f99ed7d7f5342d8069
+SHA-1   hash: 0ebfe1ad02acc08a86b668bd7c4c22b771931ecd
+SHA-256 hash: e3fcb4cc8f5f19954f52e565f0f6a9756089b31e549cda814f17c1148ecca949
+SHA-512 hash: 793c14db2b9a5e5a48b215b26c0561ddd0a3d09fa039d297036a43e7b02920df351f057bddcb869f7c95c879bdc060dd42350f8347e9382286d0f0032e6c3ed8
 
 [IMAGE_SECTION_HEADER]
-0x2A0      0x0   Name:                          .CRT
-0x2A8      0x8   Misc:                          0x68      
-0x2A8      0x8   Misc_PhysicalAddress:          0x68      
-0x2A8      0x8   Misc_VirtualSize:              0x68      
-0x2AC      0xC   VirtualAddress:                0x9000    
-0x2B0      0x10  SizeOfRawData:                 0x200     
-0x2B4      0x14  PointerToRawData:              0x3E00    
-0x2B8      0x18  PointerToRelocations:          0x0       
-0x2BC      0x1C  PointerToLinenumbers:          0x0       
-0x2C0      0x20  NumberOfRelocations:           0x0       
-0x2C2      0x22  NumberOfLinenumbers:           0x0       
-0x2C4      0x24  Characteristics:               0xC0400040
-Flags: IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_2048BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_8BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_READ, IMAGE_SCN_MEM_WRITE
-Entropy: 0.270919 (Min=0.0, Max=8.0)
-MD5     hash: bc664edb9eee3bd9eecad0e585781d7e
-SHA-1   hash: fda47ae799db11c42cb182a970a1d8efa857497d
-SHA-256 hash: 8adeeb9cb71e31a76a2b6483e7e9dea16e3061936643c0eee03752fa2e5db7e6
-SHA-512 hash: 930d299f6644363dbcc7b3480458960061052a0181c8bfe42d35df5b063b81f042bcafb0ed1a12cff34a71d0651d68c856ff3a6d0bff2d259965d6a90dd5239c
-
-[IMAGE_SECTION_HEADER]
-0x2C8      0x0   Name:                          .tls
-0x2D0      0x8   Misc:                          0x10      
-0x2D0      0x8   Misc_PhysicalAddress:          0x10      
-0x2D0      0x8   Misc_VirtualSize:              0x10      
-0x2D4      0xC   VirtualAddress:                0xA000    
-0x2D8      0x10  SizeOfRawData:                 0x200     
-0x2DC      0x14  PointerToRawData:              0x4000    
-0x2E0      0x18  PointerToRelocations:          0x0       
-0x2E4      0x1C  PointerToLinenumbers:          0x0       
-0x2E8      0x20  NumberOfRelocations:           0x0       
-0x2EA      0x22  NumberOfLinenumbers:           0x0       
-0x2EC      0x24  Characteristics:               0xC0400040
-Flags: IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_2048BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_8BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_READ, IMAGE_SCN_MEM_WRITE
-Entropy: 0.000000 (Min=0.0, Max=8.0)
-MD5     hash: bf619eac0cdf3f68d496ea9344137e8b
-SHA-1   hash: 5c3eb80066420002bc3dcc7ca4ab6efad7ed4ae5
-SHA-256 hash: 076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560
-SHA-512 hash: df40d4a774e0b453a5b87c00d6f0ef5d753143454e88ee5f7b607134598294c7905ccbcf94bbc46e474db6eb44e56a6dbb6d9a1be9d4fb5d1b5f2d0c6ed34bfe
-
-[IMAGE_SECTION_HEADER]
-0x2F0      0x0   Name:                          /4
-0x2F8      0x8   Misc:                          0x50      
-0x2F8      0x8   Misc_PhysicalAddress:          0x50      
-0x2F8      0x8   Misc_VirtualSize:              0x50      
-0x2FC      0xC   VirtualAddress:                0xB000    
-0x300      0x10  SizeOfRawData:                 0x200     
-0x304      0x14  PointerToRawData:              0x4200    
-0x308      0x18  PointerToRelocations:          0x0       
-0x30C      0x1C  PointerToLinenumbers:          0x0       
-0x310      0x20  NumberOfRelocations:           0x0       
-0x312      0x22  NumberOfLinenumbers:           0x0       
-0x314      0x24  Characteristics:               0x42500040
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_1BYTES, IMAGE_SCN_ALIGN_2048BYTES, IMAGE_SCN_ALIGN_256BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_8BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_DISCARDABLE, IMAGE_SCN_MEM_READ
-Entropy: 0.216207 (Min=0.0, Max=8.0)
-MD5     hash: 67eb87e08ee113d265e9d277c87a3ad8
-SHA-1   hash: ed38e6fe3b70ccee3ea82c1387719acdefa03474
-SHA-256 hash: c590728487ff3d0fba7c85ed9d5db0e41745d148b8bd5786bb49deee082e82a6
-SHA-512 hash: 98444039dc09d2bed4ee156f09b328a0220e6bb074e9c02adceb1a298f63e1c81a9ec46dcbac5577d0e8c2c11219df1c1f25c3891e773e02d24a91637440655c
-
-[IMAGE_SECTION_HEADER]
-0x318      0x0   Name:                          /19
-0x320      0x8   Misc:                          0x1F08    
-0x320      0x8   Misc_PhysicalAddress:          0x1F08    
-0x320      0x8   Misc_VirtualSize:              0x1F08    
-0x324      0xC   VirtualAddress:                0xC000    
-0x328      0x10  SizeOfRawData:                 0x2000    
-0x32C      0x14  PointerToRawData:              0x4400    
-0x330      0x18  PointerToRelocations:          0x0       
-0x334      0x1C  PointerToLinenumbers:          0x0       
-0x338      0x20  NumberOfRelocations:           0x0       
-0x33A      0x22  NumberOfLinenumbers:           0x0       
-0x33C      0x24  Characteristics:               0x42100040
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_1BYTES, IMAGE_SCN_ALIGN_256BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_DISCARDABLE, IMAGE_SCN_MEM_READ
-Entropy: 5.821465 (Min=0.0, Max=8.0)
-MD5     hash: 904586424adcc3990fa43595876fe65c
-SHA-1   hash: f700a0567fc22db0b3deb1ea29826274f7a46a68
-SHA-256 hash: 6ec79f6ca36fd974e7f27b96aba4c6ebf2c4e207dd3067038f6ed0c46b2d4263
-SHA-512 hash: 906f15bdb149a6a01da51141f7405b3f907840166b9088303a3fea61d92a02635c2caa615caa88e3c90829018ce3ff1f2bc905cf5afc7af3f597ae109a1b39c3
-
-[IMAGE_SECTION_HEADER]
-0x340      0x0   Name:                          /31
-0x348      0x8   Misc:                          0x149     
-0x348      0x8   Misc_PhysicalAddress:          0x149     
-0x348      0x8   Misc_VirtualSize:              0x149     
-0x34C      0xC   VirtualAddress:                0xE000    
-0x350      0x10  SizeOfRawData:                 0x200     
-0x354      0x14  PointerToRawData:              0x6400    
-0x358      0x18  PointerToRelocations:          0x0       
-0x35C      0x1C  PointerToLinenumbers:          0x0       
-0x360      0x20  NumberOfRelocations:           0x0       
-0x362      0x22  NumberOfLinenumbers:           0x0       
-0x364      0x24  Characteristics:               0x42100040
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_1BYTES, IMAGE_SCN_ALIGN_256BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_DISCARDABLE, IMAGE_SCN_MEM_READ
-Entropy: 3.287292 (Min=0.0, Max=8.0)
-MD5     hash: 5d291f74219487bffd06356d36f3a0e4
-SHA-1   hash: 040adf5044a3051a3c904d09ca8e2aa0490d4e36
-SHA-256 hash: 914f6d7f279865e35f2e5e2b1f83c81dc4fbb7960d496b393a756a806b2821b3
-SHA-512 hash: 5a6a8ec622305eabd82a6aa95c325956e81761be7272add4aaa5aab044d4b3ebde4f8ca754afdd729942da245da71b40c09e32f9cd4704d2253713eceac86483
-
-[IMAGE_SECTION_HEADER]
-0x368      0x0   Name:                          /45
-0x370      0x8   Misc:                          0x222     
-0x370      0x8   Misc_PhysicalAddress:          0x222     
-0x370      0x8   Misc_VirtualSize:              0x222     
-0x374      0xC   VirtualAddress:                0xF000    
-0x378      0x10  SizeOfRawData:                 0x400     
-0x37C      0x14  PointerToRawData:              0x6600    
-0x380      0x18  PointerToRelocations:          0x0       
-0x384      0x1C  PointerToLinenumbers:          0x0       
-0x388      0x20  NumberOfRelocations:           0x0       
-0x38A      0x22  NumberOfLinenumbers:           0x0       
-0x38C      0x24  Characteristics:               0x42100040
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_1BYTES, IMAGE_SCN_ALIGN_256BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_DISCARDABLE, IMAGE_SCN_MEM_READ
-Entropy: 3.228511 (Min=0.0, Max=8.0)
-MD5     hash: cdd04561dc7a2aae3ab517ca72a2f95a
-SHA-1   hash: 779a9b79ac439894cbaf8babed405ddc2fc9872c
-SHA-256 hash: 884fa033e8a52a8bda9a2fb3e8e3d20fc0f3a0e4fdb25c203437094a3d42da13
-SHA-512 hash: 9723b44bd8af06385ce792273393cfe7faadce6c0ceaa3dc4157095be15d27ce2bffe9aa8cc4f22fdfe69664474f79fcb38282af7ff2d0164bcbfb1138ca4eed
-
-[IMAGE_SECTION_HEADER]
-0x390      0x0   Name:                          /57
-0x398      0x8   Misc:                          0x48      
-0x398      0x8   Misc_PhysicalAddress:          0x48      
-0x398      0x8   Misc_VirtualSize:              0x48      
-0x39C      0xC   VirtualAddress:                0x10000   
-0x3A0      0x10  SizeOfRawData:                 0x200     
-0x3A4      0x14  PointerToRawData:              0x6A00    
-0x3A8      0x18  PointerToRelocations:          0x0       
-0x3AC      0x1C  PointerToLinenumbers:          0x0       
-0x3B0      0x20  NumberOfRelocations:           0x0       
-0x3B2      0x22  NumberOfLinenumbers:           0x0       
-0x3B4      0x24  Characteristics:               0x42400040
-Flags: IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_2048BYTES, IMAGE_SCN_ALIGN_32BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_8192BYTES, IMAGE_SCN_ALIGN_8BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_DISCARDABLE, IMAGE_SCN_MEM_READ
-Entropy: 0.689244 (Min=0.0, Max=8.0)
-MD5     hash: 366ae1520b258f7961daffd5622f4ae4
-SHA-1   hash: b2b6e130802603893bbd9ad7a1312b5e905bf5cd
-SHA-256 hash: a27390ec9c2a25e4d0deddea56b2777cf878af48f481ebf263f5411d0527be01
-SHA-512 hash: a1aed561938911fe5119ceecd7757726c5dba6d99ab694f2a1108c1181f6a7e62a603e8f5ebb1edab1f0c96835457e72b2035124d09194344093adb07d479616
-
-[IMAGE_SECTION_HEADER]
-0x3B8      0x0   Name:                          /70
-0x3C0      0x8   Misc:                          0x9B      
-0x3C0      0x8   Misc_PhysicalAddress:          0x9B      
-0x3C0      0x8   Misc_VirtualSize:              0x9B      
-0x3C4      0xC   VirtualAddress:                0x11000   
-0x3C8      0x10  SizeOfRawData:                 0x200     
-0x3CC      0x14  PointerToRawData:              0x6C00    
-0x3D0      0x18  PointerToRelocations:          0x0       
-0x3D4      0x1C  PointerToLinenumbers:          0x0       
-0x3D8      0x20  NumberOfRelocations:           0x0       
-0x3DA      0x22  NumberOfLinenumbers:           0x0       
-0x3DC      0x24  Characteristics:               0x42100040
-Flags: IMAGE_SCN_ALIGN_1024BYTES, IMAGE_SCN_ALIGN_16BYTES, IMAGE_SCN_ALIGN_1BYTES, IMAGE_SCN_ALIGN_256BYTES, IMAGE_SCN_ALIGN_4096BYTES, IMAGE_SCN_ALIGN_4BYTES, IMAGE_SCN_ALIGN_64BYTES, IMAGE_SCN_ALIGN_MASK, IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_DISCARDABLE, IMAGE_SCN_MEM_READ
-Entropy: 2.320780 (Min=0.0, Max=8.0)
-MD5     hash: 406b70665a5983d1f1682455c669f732
-SHA-1   hash: cd4948c16f5c1f704094631efdae20e951f63b2d
-SHA-256 hash: 7e05ddbff0b1130bbd8deab9f81bcdb16a63c8372520701bafca61b32adb62d5
-SHA-512 hash: 67400a89a2e99c3cd9a2be2abaa81382df95345457b02e06eda40ce0d721aba6632742757960bfdfc5a544076db45e75a528460bc0e8efadb8e7358d7d0896bf
+0x1D8      0x0   Name:                          UPX2
+0x1E0      0x8   Misc:                          0x1000    
+0x1E0      0x8   Misc_PhysicalAddress:          0x1000    
+0x1E0      0x8   Misc_VirtualSize:              0x1000    
+0x1E4      0xC   VirtualAddress:                0x14000   
+0x1E8      0x10  SizeOfRawData:                 0x200     
+0x1EC      0x14  PointerToRawData:              0x3200    
+0x1F0      0x18  PointerToRelocations:          0x0       
+0x1F4      0x1C  PointerToLinenumbers:          0x0       
+0x1F8      0x20  NumberOfRelocations:           0x0       
+0x1FA      0x22  NumberOfLinenumbers:           0x0       
+0x1FC      0x24  Characteristics:               0xC0000040
+Flags: IMAGE_SCN_CNT_INITIALIZED_DATA, IMAGE_SCN_MEM_READ, IMAGE_SCN_MEM_WRITE
+Entropy: 2.170565 (Min=0.0, Max=8.0)
+MD5     hash: 5ccc8fcc6699863a3aa9e9542ddc837b
+SHA-1   hash: b773a6f29738977ebeb53b36be093ea001e2be45
+SHA-256 hash: 4e3e6b73cb9e56f85f70f4a27b8cd340ee582169a4618e7628b2a2369f8331ef
+SHA-512 hash: bd50fec279eeabc29f0dab39093751dd058162c73a966ad9c03296d49ceca5485741d681872058593c9961687985f980a129cca1835fbc7120b38a475a16bc1f
 
 ----------Directories----------
 
@@ -380,8 +150,8 @@ SHA-512 hash: 67400a89a2e99c3cd9a2be2abaa81382df95345457b02e06eda40ce0d721aba663
 0x108      0x0   VirtualAddress:                0x0       
 0x10C      0x4   Size:                          0x0       
 [IMAGE_DIRECTORY_ENTRY_IMPORT]
-0x110      0x0   VirtualAddress:                0x8000    
-0x114      0x4   Size:                          0x898     
+0x110      0x0   VirtualAddress:                0x14000   
+0x114      0x4   Size:                          0x110     
 [IMAGE_DIRECTORY_ENTRY_RESOURCE]
 0x118      0x0   VirtualAddress:                0x0       
 0x11C      0x4   Size:                          0x0       
@@ -404,7 +174,7 @@ SHA-512 hash: 67400a89a2e99c3cd9a2be2abaa81382df95345457b02e06eda40ce0d721aba663
 0x148      0x0   VirtualAddress:                0x0       
 0x14C      0x4   Size:                          0x0       
 [IMAGE_DIRECTORY_ENTRY_TLS]
-0x150      0x0   VirtualAddress:                0x4140    
+0x150      0x0   VirtualAddress:                0x13E10   
 0x154      0x4   Size:                          0x28      
 [IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG]
 0x158      0x0   VirtualAddress:                0x0       
@@ -413,8 +183,8 @@ SHA-512 hash: 67400a89a2e99c3cd9a2be2abaa81382df95345457b02e06eda40ce0d721aba663
 0x160      0x0   VirtualAddress:                0x0       
 0x164      0x4   Size:                          0x0       
 [IMAGE_DIRECTORY_ENTRY_IAT]
-0x168      0x0   VirtualAddress:                0x8218    
-0x16C      0x4   Size:                          0x1C8     
+0x168      0x0   VirtualAddress:                0x0       
+0x16C      0x4   Size:                          0x0       
 [IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT]
 0x170      0x0   VirtualAddress:                0x0       
 0x174      0x4   Size:                          0x0       
@@ -428,812 +198,45 @@ SHA-512 hash: 67400a89a2e99c3cd9a2be2abaa81382df95345457b02e06eda40ce0d721aba663
 ----------Imported symbols----------
 
 [IMAGE_IMPORT_DESCRIPTOR]
-0x3400     0x0   OriginalFirstThunk:            0x8050    
-0x3400     0x0   Characteristics:               0x8050    
-0x3404     0x4   TimeDateStamp:                 0x0        [Thu Jan  1 00:00:00 1970 UTC]
-0x3408     0x8   ForwarderChain:                0x0       
-0x340C     0xC   Name:                          0x87F0    
-0x3410     0x10  FirstThunk:                    0x8218    
+0x3200     0x0   OriginalFirstThunk:            0x0       
+0x3200     0x0   Characteristics:               0x0       
+0x3204     0x4   TimeDateStamp:                 0x0        [Thu Jan  1 00:00:00 1970 UTC]
+0x3208     0x8   ForwarderChain:                0x0       
+0x320C     0xC   Name:                          0x14098   
+0x3210     0x10  FirstThunk:                    0x14050   
 
-KERNEL32.dll.DeleteCriticalSection Hint[269]
-KERNEL32.dll.EnterCriticalSection Hint[305]
-KERNEL32.dll.GetCurrentProcess Hint[536]
-KERNEL32.dll.GetCurrentProcessId Hint[537]
-KERNEL32.dll.GetCurrentThreadId Hint[541]
-KERNEL32.dll.GetLastError Hint[610]
-KERNEL32.dll.GetStartupInfoA Hint[722]
-KERNEL32.dll.GetSystemTimeAsFileTime Hint[747]
-KERNEL32.dll.GetTickCount Hint[775]
-KERNEL32.dll.InitializeCriticalSection Hint[864]
-KERNEL32.dll.LeaveCriticalSection Hint[952]
-KERNEL32.dll.QueryPerformanceCounter Hint[1094]
-KERNEL32.dll.RtlAddFunctionTable Hint[1180]
-KERNEL32.dll.RtlCaptureContext Hint[1181]
-KERNEL32.dll.RtlLookupFunctionEntry Hint[1188]
-KERNEL32.dll.RtlVirtualUnwind Hint[1195]
-KERNEL32.dll.SetUnhandledExceptionFilter Hint[1347]
-KERNEL32.dll.Sleep Hint[1361]
-KERNEL32.dll.TerminateProcess Hint[1376]
-KERNEL32.dll.TlsGetValue Hint[1396]
-KERNEL32.dll.UnhandledExceptionFilter Hint[1410]
-KERNEL32.dll.VirtualProtect Hint[1444]
-KERNEL32.dll.VirtualQuery Hint[1446]
+KERNEL32.DLL.LoadLibraryA Hint[0]
+KERNEL32.DLL.ExitProcess Hint[0]
+KERNEL32.DLL.GetProcAddress Hint[0]
+KERNEL32.DLL.VirtualProtect Hint[0]
 
 [IMAGE_IMPORT_DESCRIPTOR]
-0x3414     0x0   OriginalFirstThunk:            0x8110    
-0x3414     0x0   Characteristics:               0x8110    
-0x3418     0x4   TimeDateStamp:                 0x0        [Thu Jan  1 00:00:00 1970 UTC]
-0x341C     0x8   ForwarderChain:                0x0       
-0x3420     0xC   Name:                          0x8864    
-0x3424     0x10  FirstThunk:                    0x82D8    
+0x3214     0x0   OriginalFirstThunk:            0x0       
+0x3214     0x0   Characteristics:               0x0       
+0x3218     0x4   TimeDateStamp:                 0x0        [Thu Jan  1 00:00:00 1970 UTC]
+0x321C     0x8   ForwarderChain:                0x0       
+0x3220     0xC   Name:                          0x140A5   
+0x3224     0x10  FirstThunk:                    0x14078   
 
-msvcrt.dll.__C_specific_handler Hint[56]
-msvcrt.dll.__getmainargs Hint[82]
-msvcrt.dll.__initenv Hint[83]
-msvcrt.dll.__iob_func Hint[84]
-msvcrt.dll.__lconv_init Hint[91]
-msvcrt.dll.__set_app_type Hint[97]
-msvcrt.dll.__setusermatherr Hint[99]
-msvcrt.dll._acmdln Hint[115]
-msvcrt.dll._amsg_exit Hint[123]
-msvcrt.dll._cexit Hint[141]
-msvcrt.dll._fmode Hint[253]
-msvcrt.dll._initterm Hint[331]
-msvcrt.dll._onexit Hint[611]
-msvcrt.dll.abort Hint[1031]
-msvcrt.dll.calloc Hint[1050]
-msvcrt.dll.exit Hint[1063]
-msvcrt.dll.fprintf Hint[1082]
-msvcrt.dll.free Hint[1089]
-msvcrt.dll.fwrite Hint[1101]
-msvcrt.dll.malloc Hint[1148]
-msvcrt.dll.memcpy Hint[1156]
-msvcrt.dll.signal Hint[1186]
-msvcrt.dll.strlen Hint[1207]
-msvcrt.dll.strncmp Hint[1210]
-msvcrt.dll.vfprintf Hint[1242]
+libstdc++-6.dll._ZSt3cin Hint[0]
 
 [IMAGE_IMPORT_DESCRIPTOR]
-0x3428     0x0   OriginalFirstThunk:            0x81E0    
-0x3428     0x0   Characteristics:               0x81E0    
-0x342C     0x4   TimeDateStamp:                 0x0        [Thu Jan  1 00:00:00 1970 UTC]
-0x3430     0x8   ForwarderChain:                0x0       
-0x3434     0xC   Name:                          0x8888    
-0x3438     0x10  FirstThunk:                    0x83A8    
+0x3228     0x0   OriginalFirstThunk:            0x0       
+0x3228     0x0   Characteristics:               0x0       
+0x322C     0x4   TimeDateStamp:                 0x0        [Thu Jan  1 00:00:00 1970 UTC]
+0x3230     0x8   ForwarderChain:                0x0       
+0x3234     0xC   Name:                          0x140B5   
+0x3238     0x10  FirstThunk:                    0x14088   
 
-libstdc++-6.dll._ZNSirsERi Hint[1699]
-libstdc++-6.dll._ZNSt8ios_base4InitC1Ev Hint[4448]
-libstdc++-6.dll._ZNSt8ios_base4InitD1Ev Hint[4450]
-libstdc++-6.dll._ZSt3cin Hint[4735]
-libstdc++-6.dll._ZSt4cout Hint[4738]
-libstdc++-6.dll._ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc Hint[4847]
+msvcrt.dll.exit Hint[0]
 
 ----------TLS----------
 
 [IMAGE_TLS_DIRECTORY]
-0x2540     0x0   StartAddressOfRawData:         0x40A000  
-0x2548     0x8   EndAddressOfRawData:           0x40A008  
-0x2550     0x10  AddressOfIndex:                0x4075FC  
-0x2558     0x18  AddressOfCallBacks:            0x409040  
-0x2560     0x20  SizeOfZeroFill:                0x0       
-0x2564     0x24  Characteristics:               0x0       
+0x3010     0x0   StartAddressOfRawData:         0x413E38  
+0x3018     0x8   EndAddressOfRawData:           0x413E40  
+0x3020     0x10  AddressOfIndex:                0x4075FC  
+0x3028     0x18  AddressOfCallBacks:            0x413E40  
+0x3030     0x20  SizeOfZeroFill:                0x0       
+0x3034     0x24  Characteristics:               0x0       
 
-----------Unwind data for exception handling----------
-
-[RUNTIME_FUNCTION]
-0x2C00     0x0   BeginAddress:                  0x1000    
-0x2C04     0x4   EndAddress:                    0x1001    
-0x2C08     0x8   UnwindData:                    0x6000    
-    [UNWIND_INFO]
-    0x3000     0x0   Version:                       0x1       
-    0x3000     0x0   Flags:                         0x0       
-    0x3001     0x1   SizeOfProlog:                  0x0       
-    0x3002     0x2   CountOfCodes:                  0x0       
-    0x3003     0x3   FrameRegister:                 0x0       
-    0x3003     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2C0C     0x0   BeginAddress:                  0x1010    
-0x2C10     0x4   EndAddress:                    0x1121    
-0x2C14     0x8   UnwindData:                    0x6004    
-    [UNWIND_INFO]
-    0x3004     0x0   Version:                       0x1       
-    0x3004     0x0   Flags:                         0x0       
-    0x3005     0x1   SizeOfProlog:                  0x4       
-    0x3006     0x2   CountOfCodes:                  0x1       
-    0x3007     0x3   FrameRegister:                 0x0       
-    0x3007     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2C18     0x0   BeginAddress:                  0x1130    
-0x2C1C     0x4   EndAddress:                    0x1179    
-0x2C20     0x8   UnwindData:                    0x600C    
-    [UNWIND_INFO]
-    0x300C     0x0   Version:                       0x1       
-    0x300C     0x0   Flags:                         0x0       
-    0x300D     0x1   SizeOfProlog:                  0x4       
-    0x300E     0x2   CountOfCodes:                  0x1       
-    0x300F     0x3   FrameRegister:                 0x0       
-    0x300F     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x38
-[RUNTIME_FUNCTION]
-0x2C24     0x0   BeginAddress:                  0x1180    
-0x2C28     0x4   EndAddress:                    0x14A6    
-0x2C2C     0x8   UnwindData:                    0x6014    
-    [UNWIND_INFO]
-    0x3014     0x0   Version:                       0x1       
-    0x3014     0x0   Flags:                         0x0       
-    0x3015     0x1   SizeOfProlog:                  0xF       
-    0x3016     0x2   CountOfCodes:                  0x8       
-    0x3017     0x3   FrameRegister:                 0x0       
-    0x3017     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x98; .PUSHREG RBX; .PUSHREG RSI; .PUSHREG RDI; .PUSHREG RBP; .PUSHREG R12; .PUSHREG R13
-[RUNTIME_FUNCTION]
-0x2C30     0x0   BeginAddress:                  0x14B0    
-0x2C34     0x4   EndAddress:                    0x14D2    
-0x2C38     0x8   UnwindData:                    0x6028    
-    [UNWIND_INFO]
-    0x3028     0x0   Version:                       0x1       
-    0x3028     0x0   Flags:                         0x1       
-    0x3029     0x1   SizeOfProlog:                  0x4       
-    0x302A     0x2   CountOfCodes:                  0x1       
-    0x302B     0x3   FrameRegister:                 0x0       
-    0x302B     0x3   FrameOffset:                   0x0       
-    0x3030     0x8   ExceptionHandler:              0x2C00    
-    Flags: UNW_FLAG_EHANDLER
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2C3C     0x0   BeginAddress:                  0x14E0    
-0x2C40     0x4   EndAddress:                    0x1502    
-0x2C44     0x8   UnwindData:                    0x6048    
-    [UNWIND_INFO]
-    0x3048     0x0   Version:                       0x1       
-    0x3048     0x0   Flags:                         0x1       
-    0x3049     0x1   SizeOfProlog:                  0x4       
-    0x304A     0x2   CountOfCodes:                  0x1       
-    0x304B     0x3   FrameRegister:                 0x0       
-    0x304B     0x3   FrameOffset:                   0x0       
-    0x3050     0x8   ExceptionHandler:              0x2C00    
-    Flags: UNW_FLAG_EHANDLER
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2C48     0x0   BeginAddress:                  0x1510    
-0x2C4C     0x4   EndAddress:                    0x1529    
-0x2C50     0x8   UnwindData:                    0x6068    
-    [UNWIND_INFO]
-    0x3068     0x0   Version:                       0x1       
-    0x3068     0x0   Flags:                         0x0       
-    0x3069     0x1   SizeOfProlog:                  0x4       
-    0x306A     0x2   CountOfCodes:                  0x1       
-    0x306B     0x3   FrameRegister:                 0x0       
-    0x306B     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2C54     0x0   BeginAddress:                  0x1530    
-0x2C58     0x4   EndAddress:                    0x153C    
-0x2C5C     0x8   UnwindData:                    0x6070    
-    [UNWIND_INFO]
-    0x3070     0x0   Version:                       0x1       
-    0x3070     0x0   Flags:                         0x0       
-    0x3071     0x1   SizeOfProlog:                  0x0       
-    0x3072     0x2   CountOfCodes:                  0x0       
-    0x3073     0x3   FrameRegister:                 0x0       
-    0x3073     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2C60     0x0   BeginAddress:                  0x1540    
-0x2C64     0x4   EndAddress:                    0x1541    
-0x2C68     0x8   UnwindData:                    0x6074    
-    [UNWIND_INFO]
-    0x3074     0x0   Version:                       0x1       
-    0x3074     0x0   Flags:                         0x0       
-    0x3075     0x1   SizeOfProlog:                  0x0       
-    0x3076     0x2   CountOfCodes:                  0x0       
-    0x3077     0x3   FrameRegister:                 0x0       
-    0x3077     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2C6C     0x0   BeginAddress:                  0x1550    
-0x2C70     0x4   EndAddress:                    0x15FE    
-0x2C74     0x8   UnwindData:                    0x6078    
-    [UNWIND_INFO]
-    0x3078     0x0   Version:                       0x1       
-    0x3078     0x0   Flags:                         0x0       
-    0x3079     0x1   SizeOfProlog:                  0x8       
-    0x307A     0x2   CountOfCodes:                  0x3       
-    0x307B     0x3   FrameRegister:                 0x5       
-    0x307B     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x30; .SETFRAME RBP, 0x0; .PUSHREG RBP
-[RUNTIME_FUNCTION]
-0x2C78     0x0   BeginAddress:                  0x15FE    
-0x2C7C     0x4   EndAddress:                    0x1619    
-0x2C80     0x8   UnwindData:                    0x6084    
-    [UNWIND_INFO]
-    0x3084     0x0   Version:                       0x1       
-    0x3084     0x0   Flags:                         0x0       
-    0x3085     0x1   SizeOfProlog:                  0x8       
-    0x3086     0x2   CountOfCodes:                  0x3       
-    0x3087     0x3   FrameRegister:                 0x5       
-    0x3087     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x20; .SETFRAME RBP, 0x0; .PUSHREG RBP
-[RUNTIME_FUNCTION]
-0x2C84     0x0   BeginAddress:                  0x1619    
-0x2C88     0x4   EndAddress:                    0x1655    
-0x2C8C     0x8   UnwindData:                    0x6090    
-    [UNWIND_INFO]
-    0x3090     0x0   Version:                       0x1       
-    0x3090     0x0   Flags:                         0x0       
-    0x3091     0x1   SizeOfProlog:                  0x8       
-    0x3092     0x2   CountOfCodes:                  0x3       
-    0x3093     0x3   FrameRegister:                 0x5       
-    0x3093     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x20; .SETFRAME RBP, 0x0; .PUSHREG RBP
-[RUNTIME_FUNCTION]
-0x2C90     0x0   BeginAddress:                  0x1655    
-0x2C94     0x4   EndAddress:                    0x1673    
-0x2C98     0x8   UnwindData:                    0x609C    
-    [UNWIND_INFO]
-    0x309C     0x0   Version:                       0x1       
-    0x309C     0x0   Flags:                         0x0       
-    0x309D     0x1   SizeOfProlog:                  0x8       
-    0x309E     0x2   CountOfCodes:                  0x3       
-    0x309F     0x3   FrameRegister:                 0x5       
-    0x309F     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x20; .SETFRAME RBP, 0x0; .PUSHREG RBP
-[RUNTIME_FUNCTION]
-0x2C9C     0x0   BeginAddress:                  0x16A0    
-0x2CA0     0x4   EndAddress:                    0x16D5    
-0x2CA4     0x8   UnwindData:                    0x60A8    
-    [UNWIND_INFO]
-    0x30A8     0x0   Version:                       0x1       
-    0x30A8     0x0   Flags:                         0x0       
-    0x30A9     0x1   SizeOfProlog:                  0x4       
-    0x30AA     0x2   CountOfCodes:                  0x1       
-    0x30AB     0x3   FrameRegister:                 0x0       
-    0x30AB     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2CA8     0x0   BeginAddress:                  0x16E0    
-0x2CAC     0x4   EndAddress:                    0x1746    
-0x2CB0     0x8   UnwindData:                    0x60B0    
-    [UNWIND_INFO]
-    0x30B0     0x0   Version:                       0x1       
-    0x30B0     0x0   Flags:                         0x0       
-    0x30B1     0x1   SizeOfProlog:                  0x6       
-    0x30B2     0x2   CountOfCodes:                  0x3       
-    0x30B3     0x3   FrameRegister:                 0x0       
-    0x30B3     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28; .PUSHREG RBX; .PUSHREG RSI
-[RUNTIME_FUNCTION]
-0x2CB4     0x0   BeginAddress:                  0x1750    
-0x2CB8     0x4   EndAddress:                    0x176F    
-0x2CBC     0x8   UnwindData:                    0x60BC    
-    [UNWIND_INFO]
-    0x30BC     0x0   Version:                       0x1       
-    0x30BC     0x0   Flags:                         0x0       
-    0x30BD     0x1   SizeOfProlog:                  0x0       
-    0x30BE     0x2   CountOfCodes:                  0x0       
-    0x30BF     0x3   FrameRegister:                 0x0       
-    0x30BF     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2CC0     0x0   BeginAddress:                  0x1770    
-0x2CC4     0x4   EndAddress:                    0x1777    
-0x2CC8     0x8   UnwindData:                    0x60C0    
-    [UNWIND_INFO]
-    0x30C0     0x0   Version:                       0x1       
-    0x30C0     0x0   Flags:                         0x0       
-    0x30C1     0x1   SizeOfProlog:                  0x0       
-    0x30C2     0x2   CountOfCodes:                  0x0       
-    0x30C3     0x3   FrameRegister:                 0x0       
-    0x30C3     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2CCC     0x0   BeginAddress:                  0x1780    
-0x2CD0     0x4   EndAddress:                    0x1783    
-0x2CD4     0x8   UnwindData:                    0x60C4    
-    [UNWIND_INFO]
-    0x30C4     0x0   Version:                       0x1       
-    0x30C4     0x0   Flags:                         0x0       
-    0x30C5     0x1   SizeOfProlog:                  0x0       
-    0x30C6     0x2   CountOfCodes:                  0x0       
-    0x30C7     0x3   FrameRegister:                 0x0       
-    0x30C7     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2CD8     0x0   BeginAddress:                  0x1790    
-0x2CDC     0x4   EndAddress:                    0x1866    
-0x2CE0     0x8   UnwindData:                    0x60C8    
-    [UNWIND_INFO]
-    0x30C8     0x0   Version:                       0x1       
-    0x30C8     0x0   Flags:                         0x0       
-    0x30C9     0x1   SizeOfProlog:                  0xA       
-    0x30CA     0x2   CountOfCodes:                  0x6       
-    0x30CB     0x3   FrameRegister:                 0x0       
-    0x30CB     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x30; .PUSHREG RBX; .PUSHREG RSI; .PUSHREG RDI; .PUSHREG RBP; .PUSHREG R12
-[RUNTIME_FUNCTION]
-0x2CE4     0x0   BeginAddress:                  0x1870    
-0x2CE8     0x4   EndAddress:                    0x1968    
-0x2CEC     0x8   UnwindData:                    0x60D8    
-    [UNWIND_INFO]
-    0x30D8     0x0   Version:                       0x1       
-    0x30D8     0x0   Flags:                         0x0       
-    0x30D9     0x1   SizeOfProlog:                  0xA       
-    0x30DA     0x2   CountOfCodes:                  0x5       
-    0x30DB     0x3   FrameRegister:                 0x5       
-    0x30DB     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x70; .SETFRAME RBP, 0x0; .PUSHREG RBX; .PUSHREG RSI; .PUSHREG RBP
-[RUNTIME_FUNCTION]
-0x2CF0     0x0   BeginAddress:                  0x1970    
-0x2CF4     0x4   EndAddress:                    0x199F    
-0x2CF8     0x8   UnwindData:                    0x60E8    
-    [UNWIND_INFO]
-    0x30E8     0x0   Version:                       0x1       
-    0x30E8     0x0   Flags:                         0x0       
-    0x30E9     0x1   SizeOfProlog:                  0x4       
-    0x30EA     0x2   CountOfCodes:                  0x1       
-    0x30EB     0x3   FrameRegister:                 0x0       
-    0x30EB     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2CFC     0x0   BeginAddress:                  0x19A0    
-0x2D00     0x4   EndAddress:                    0x1A13    
-0x2D04     0x8   UnwindData:                    0x60F0    
-    [UNWIND_INFO]
-    0x30F0     0x0   Version:                       0x1       
-    0x30F0     0x0   Flags:                         0x0       
-    0x30F1     0x1   SizeOfProlog:                  0x6       
-    0x30F2     0x2   CountOfCodes:                  0x3       
-    0x30F3     0x3   FrameRegister:                 0x0       
-    0x30F3     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28; .PUSHREG RBX; .PUSHREG RSI
-[RUNTIME_FUNCTION]
-0x2D08     0x0   BeginAddress:                  0x1A20    
-0x2D0C     0x4   EndAddress:                    0x1A23    
-0x2D10     0x8   UnwindData:                    0x60FC    
-    [UNWIND_INFO]
-    0x30FC     0x0   Version:                       0x1       
-    0x30FC     0x0   Flags:                         0x0       
-    0x30FD     0x1   SizeOfProlog:                  0x0       
-    0x30FE     0x2   CountOfCodes:                  0x0       
-    0x30FF     0x3   FrameRegister:                 0x0       
-    0x30FF     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2D14     0x0   BeginAddress:                  0x1A30    
-0x2D18     0x4   EndAddress:                    0x1A71    
-0x2D1C     0x8   UnwindData:                    0x6100    
-    [UNWIND_INFO]
-    0x3100     0x0   Version:                       0x1       
-    0x3100     0x0   Flags:                         0x0       
-    0x3101     0x1   SizeOfProlog:                  0x4       
-    0x3102     0x2   CountOfCodes:                  0x1       
-    0x3103     0x3   FrameRegister:                 0x0       
-    0x3103     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x58
-[RUNTIME_FUNCTION]
-0x2D20     0x0   BeginAddress:                  0x1A80    
-0x2D24     0x4   EndAddress:                    0x1A8C    
-0x2D28     0x8   UnwindData:                    0x6108    
-    [UNWIND_INFO]
-    0x3108     0x0   Version:                       0x1       
-    0x3108     0x0   Flags:                         0x0       
-    0x3109     0x1   SizeOfProlog:                  0x0       
-    0x310A     0x2   CountOfCodes:                  0x0       
-    0x310B     0x3   FrameRegister:                 0x0       
-    0x310B     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2D2C     0x0   BeginAddress:                  0x1A90    
-0x2D30     0x4   EndAddress:                    0x1B8C    
-0x2D34     0x8   UnwindData:                    0x610C    
-    [UNWIND_INFO]
-    0x310C     0x0   Version:                       0x1       
-    0x310C     0x0   Flags:                         0x0       
-    0x310D     0x1   SizeOfProlog:                  0x16      
-    0x310E     0x2   CountOfCodes:                  0x9       
-    0x310F     0x3   FrameRegister:                 0x0       
-    0x310F     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .SAVEXMM128 XMM8, 0x60; .SAVEXMM128 XMM7, 0x50; .SAVEXMM128 XMM6, 0x40; .ALLOCSTACK 0x78; .PUSHREG RBX; .PUSHREG RSI
-[RUNTIME_FUNCTION]
-0x2D38     0x0   BeginAddress:                  0x1B90    
-0x2D3C     0x4   EndAddress:                    0x1B93    
-0x2D40     0x8   UnwindData:                    0x6124    
-    [UNWIND_INFO]
-    0x3124     0x0   Version:                       0x1       
-    0x3124     0x0   Flags:                         0x0       
-    0x3125     0x1   SizeOfProlog:                  0x0       
-    0x3126     0x2   CountOfCodes:                  0x0       
-    0x3127     0x3   FrameRegister:                 0x0       
-    0x3127     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2D44     0x0   BeginAddress:                  0x1BA0    
-0x2D48     0x4   EndAddress:                    0x1BA4    
-0x2D4C     0x8   UnwindData:                    0x6128    
-    [UNWIND_INFO]
-    0x3128     0x0   Version:                       0x1       
-    0x3128     0x0   Flags:                         0x0       
-    0x3129     0x1   SizeOfProlog:                  0x0       
-    0x312A     0x2   CountOfCodes:                  0x0       
-    0x312B     0x3   FrameRegister:                 0x0       
-    0x312B     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2D50     0x0   BeginAddress:                  0x1BB0    
-0x2D54     0x4   EndAddress:                    0x1BB4    
-0x2D58     0x8   UnwindData:                    0x612C    
-    [UNWIND_INFO]
-    0x312C     0x0   Version:                       0x1       
-    0x312C     0x0   Flags:                         0x0       
-    0x312D     0x1   SizeOfProlog:                  0x0       
-    0x312E     0x2   CountOfCodes:                  0x0       
-    0x312F     0x3   FrameRegister:                 0x0       
-    0x312F     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2D5C     0x0   BeginAddress:                  0x1BC0    
-0x2D60     0x4   EndAddress:                    0x1D8D    
-0x2D64     0x8   UnwindData:                    0x613C    
-    [UNWIND_INFO]
-    0x313C     0x0   Version:                       0x1       
-    0x313C     0x0   Flags:                         0x0       
-    0x313D     0x1   SizeOfProlog:                  0xA       
-    0x313E     0x2   CountOfCodes:                  0x6       
-    0x313F     0x3   FrameRegister:                 0x0       
-    0x313F     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x50; .PUSHREG RBX; .PUSHREG RSI; .PUSHREG RDI; .PUSHREG RBP; .PUSHREG R12
-[RUNTIME_FUNCTION]
-0x2D68     0x0   BeginAddress:                  0x1D90    
-0x2D6C     0x4   EndAddress:                    0x204B    
-0x2D70     0x8   UnwindData:                    0x614C    
-    [UNWIND_INFO]
-    0x314C     0x0   Version:                       0x1       
-    0x314C     0x0   Flags:                         0x0       
-    0x314D     0x1   SizeOfProlog:                  0x18      
-    0x314E     0x2   CountOfCodes:                  0xA       
-    0x314F     0x3   FrameRegister:                 0x5       
-    0x314F     0x3   FrameOffset:                   0x8       
-    Flags: 
-    Unwind codes: .SETFRAME RBP, 0x80; .ALLOCSTACK 0x38; .PUSHREG RBX; .PUSHREG RSI; .PUSHREG RDI; .PUSHREG R12; .PUSHREG R13; .PUSHREG R14; .PUSHREG R15; .PUSHREG RBP
-[RUNTIME_FUNCTION]
-0x2D74     0x0   BeginAddress:                  0x2050    
-0x2D78     0x4   EndAddress:                    0x21F0    
-0x2D7C     0x8   UnwindData:                    0x6164    
-    [UNWIND_INFO]
-    0x3164     0x0   Version:                       0x1       
-    0x3164     0x0   Flags:                         0x0       
-    0x3165     0x1   SizeOfProlog:                  0x4       
-    0x3166     0x2   CountOfCodes:                  0x1       
-    0x3167     0x3   FrameRegister:                 0x0       
-    0x3167     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2D80     0x0   BeginAddress:                  0x21F0    
-0x2D84     0x4   EndAddress:                    0x22DC    
-0x2D88     0x8   UnwindData:                    0x616C    
-    [UNWIND_INFO]
-    0x316C     0x0   Version:                       0x1       
-    0x316C     0x0   Flags:                         0x0       
-    0x316D     0x1   SizeOfProlog:                  0xA       
-    0x316E     0x2   CountOfCodes:                  0x6       
-    0x316F     0x3   FrameRegister:                 0x0       
-    0x316F     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x20; .PUSHREG RBX; .PUSHREG RSI; .PUSHREG RDI; .PUSHREG RBP; .PUSHREG R12
-[RUNTIME_FUNCTION]
-0x2D8C     0x0   BeginAddress:                  0x22E0    
-0x2D90     0x4   EndAddress:                    0x24C7    
-0x2D94     0x8   UnwindData:                    0x617C    
-    [UNWIND_INFO]
-    0x317C     0x0   Version:                       0x1       
-    0x317C     0x0   Flags:                         0x0       
-    0x317D     0x1   SizeOfProlog:                  0x5       
-    0x317E     0x2   CountOfCodes:                  0x2       
-    0x317F     0x3   FrameRegister:                 0x0       
-    0x317F     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x20; .PUSHREG RBX
-[RUNTIME_FUNCTION]
-0x2D98     0x0   BeginAddress:                  0x24D0    
-0x2D9C     0x4   EndAddress:                    0x253A    
-0x2DA0     0x8   UnwindData:                    0x6184    
-    [UNWIND_INFO]
-    0x3184     0x0   Version:                       0x1       
-    0x3184     0x0   Flags:                         0x0       
-    0x3185     0x1   SizeOfProlog:                  0x8       
-    0x3186     0x2   CountOfCodes:                  0x5       
-    0x3187     0x3   FrameRegister:                 0x0       
-    0x3187     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28; .PUSHREG RBX; .PUSHREG RSI; .PUSHREG RDI; .PUSHREG RBP
-[RUNTIME_FUNCTION]
-0x2DA4     0x0   BeginAddress:                  0x2540    
-0x2DA8     0x4   EndAddress:                    0x25BF    
-0x2DAC     0x8   UnwindData:                    0x6194    
-    [UNWIND_INFO]
-    0x3194     0x0   Version:                       0x1       
-    0x3194     0x0   Flags:                         0x0       
-    0x3195     0x1   SizeOfProlog:                  0x8       
-    0x3196     0x2   CountOfCodes:                  0x5       
-    0x3197     0x3   FrameRegister:                 0x0       
-    0x3197     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28; .PUSHREG RBX; .PUSHREG RSI; .PUSHREG RDI; .PUSHREG RBP
-[RUNTIME_FUNCTION]
-0x2DB0     0x0   BeginAddress:                  0x25C0    
-0x2DB4     0x4   EndAddress:                    0x2660    
-0x2DB8     0x8   UnwindData:                    0x61A4    
-    [UNWIND_INFO]
-    0x31A4     0x0   Version:                       0x1       
-    0x31A4     0x0   Flags:                         0x0       
-    0x31A5     0x1   SizeOfProlog:                  0x5       
-    0x31A6     0x2   CountOfCodes:                  0x2       
-    0x31A7     0x3   FrameRegister:                 0x0       
-    0x31A7     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x20; .PUSHREG RBX
-[RUNTIME_FUNCTION]
-0x2DBC     0x0   BeginAddress:                  0x2660    
-0x2DC0     0x4   EndAddress:                    0x273A    
-0x2DC4     0x8   UnwindData:                    0x61AC    
-    [UNWIND_INFO]
-    0x31AC     0x0   Version:                       0x1       
-    0x31AC     0x0   Flags:                         0x0       
-    0x31AD     0x1   SizeOfProlog:                  0x5       
-    0x31AE     0x2   CountOfCodes:                  0x2       
-    0x31AF     0x3   FrameRegister:                 0x0       
-    0x31AF     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x20; .PUSHREG RBX
-[RUNTIME_FUNCTION]
-0x2DC8     0x0   BeginAddress:                  0x2740    
-0x2DCC     0x4   EndAddress:                    0x275E    
-0x2DD0     0x8   UnwindData:                    0x61B4    
-    [UNWIND_INFO]
-    0x31B4     0x0   Version:                       0x1       
-    0x31B4     0x0   Flags:                         0x0       
-    0x31B5     0x1   SizeOfProlog:                  0x0       
-    0x31B6     0x2   CountOfCodes:                  0x0       
-    0x31B7     0x3   FrameRegister:                 0x0       
-    0x31B7     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2DD4     0x0   BeginAddress:                  0x2760    
-0x2DD8     0x4   EndAddress:                    0x2772    
-0x2DDC     0x8   UnwindData:                    0x61B8    
-    [UNWIND_INFO]
-    0x31B8     0x0   Version:                       0x1       
-    0x31B8     0x0   Flags:                         0x0       
-    0x31B9     0x1   SizeOfProlog:                  0x0       
-    0x31BA     0x2   CountOfCodes:                  0x0       
-    0x31BB     0x3   FrameRegister:                 0x0       
-    0x31BB     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2DE0     0x0   BeginAddress:                  0x2780    
-0x2DE4     0x4   EndAddress:                    0x27C4    
-0x2DE8     0x8   UnwindData:                    0x61BC    
-    [UNWIND_INFO]
-    0x31BC     0x0   Version:                       0x1       
-    0x31BC     0x0   Flags:                         0x0       
-    0x31BD     0x1   SizeOfProlog:                  0x0       
-    0x31BE     0x2   CountOfCodes:                  0x0       
-    0x31BF     0x3   FrameRegister:                 0x0       
-    0x31BF     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2DEC     0x0   BeginAddress:                  0x27D0    
-0x2DF0     0x4   EndAddress:                    0x285D    
-0x2DF4     0x8   UnwindData:                    0x61C0    
-    [UNWIND_INFO]
-    0x31C0     0x0   Version:                       0x1       
-    0x31C0     0x0   Flags:                         0x0       
-    0x31C1     0x1   SizeOfProlog:                  0x7       
-    0x31C2     0x2   CountOfCodes:                  0x4       
-    0x31C3     0x3   FrameRegister:                 0x0       
-    0x31C3     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x20; .PUSHREG RBX; .PUSHREG RSI; .PUSHREG RDI
-[RUNTIME_FUNCTION]
-0x2DF8     0x0   BeginAddress:                  0x2860    
-0x2DFC     0x4   EndAddress:                    0x28D4    
-0x2E00     0x8   UnwindData:                    0x61CC    
-    [UNWIND_INFO]
-    0x31CC     0x0   Version:                       0x1       
-    0x31CC     0x0   Flags:                         0x0       
-    0x31CD     0x1   SizeOfProlog:                  0x4       
-    0x31CE     0x2   CountOfCodes:                  0x1       
-    0x31CF     0x3   FrameRegister:                 0x0       
-    0x31CF     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2E04     0x0   BeginAddress:                  0x28E0    
-0x2E08     0x4   EndAddress:                    0x291E    
-0x2E0C     0x8   UnwindData:                    0x61D4    
-    [UNWIND_INFO]
-    0x31D4     0x0   Version:                       0x1       
-    0x31D4     0x0   Flags:                         0x0       
-    0x31D5     0x1   SizeOfProlog:                  0x4       
-    0x31D6     0x2   CountOfCodes:                  0x1       
-    0x31D7     0x3   FrameRegister:                 0x0       
-    0x31D7     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2E10     0x0   BeginAddress:                  0x2920    
-0x2E14     0x4   EndAddress:                    0x298F    
-0x2E18     0x8   UnwindData:                    0x61DC    
-    [UNWIND_INFO]
-    0x31DC     0x0   Version:                       0x1       
-    0x31DC     0x0   Flags:                         0x0       
-    0x31DD     0x1   SizeOfProlog:                  0x4       
-    0x31DE     0x2   CountOfCodes:                  0x1       
-    0x31DF     0x3   FrameRegister:                 0x0       
-    0x31DF     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2E1C     0x0   BeginAddress:                  0x2990    
-0x2E20     0x4   EndAddress:                    0x29C7    
-0x2E24     0x8   UnwindData:                    0x61E4    
-    [UNWIND_INFO]
-    0x31E4     0x0   Version:                       0x1       
-    0x31E4     0x0   Flags:                         0x0       
-    0x31E5     0x1   SizeOfProlog:                  0x4       
-    0x31E6     0x2   CountOfCodes:                  0x1       
-    0x31E7     0x3   FrameRegister:                 0x0       
-    0x31E7     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2E28     0x0   BeginAddress:                  0x29D0    
-0x2E2C     0x4   EndAddress:                    0x2A61    
-0x2E30     0x8   UnwindData:                    0x61EC    
-    [UNWIND_INFO]
-    0x31EC     0x0   Version:                       0x1       
-    0x31EC     0x0   Flags:                         0x0       
-    0x31ED     0x1   SizeOfProlog:                  0x4       
-    0x31EE     0x2   CountOfCodes:                  0x1       
-    0x31EF     0x3   FrameRegister:                 0x0       
-    0x31EF     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2E34     0x0   BeginAddress:                  0x2A70    
-0x2E38     0x4   EndAddress:                    0x2B16    
-0x2E3C     0x8   UnwindData:                    0x61F4    
-    [UNWIND_INFO]
-    0x31F4     0x0   Version:                       0x1       
-    0x31F4     0x0   Flags:                         0x0       
-    0x31F5     0x1   SizeOfProlog:                  0x4       
-    0x31F6     0x2   CountOfCodes:                  0x1       
-    0x31F7     0x3   FrameRegister:                 0x0       
-    0x31F7     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x28
-[RUNTIME_FUNCTION]
-0x2E40     0x0   BeginAddress:                  0x2C10    
-0x2E44     0x4   EndAddress:                    0x2C2F    
-0x2E48     0x8   UnwindData:                    0x61FC    
-    [UNWIND_INFO]
-    0x31FC     0x0   Version:                       0x1       
-    0x31FC     0x0   Flags:                         0x0       
-    0x31FD     0x1   SizeOfProlog:                  0x5       
-    0x31FE     0x2   CountOfCodes:                  0x2       
-    0x31FF     0x3   FrameRegister:                 0x0       
-    0x31FF     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x20; .PUSHREG RBX
-[RUNTIME_FUNCTION]
-0x2E4C     0x0   BeginAddress:                  0x2C30    
-0x2E50     0x4   EndAddress:                    0x2C38    
-0x2E54     0x8   UnwindData:                    0x6204    
-    [UNWIND_INFO]
-    0x3204     0x0   Version:                       0x1       
-    0x3204     0x0   Flags:                         0x0       
-    0x3205     0x1   SizeOfProlog:                  0x0       
-    0x3206     0x2   CountOfCodes:                  0x0       
-    0x3207     0x3   FrameRegister:                 0x0       
-    0x3207     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2E58     0x0   BeginAddress:                  0x2C40    
-0x2E5C     0x4   EndAddress:                    0x2C4B    
-0x2E60     0x8   UnwindData:                    0x6208    
-    [UNWIND_INFO]
-    0x3208     0x0   Version:                       0x1       
-    0x3208     0x0   Flags:                         0x0       
-    0x3209     0x1   SizeOfProlog:                  0x0       
-    0x320A     0x2   CountOfCodes:                  0x0       
-    0x320B     0x3   FrameRegister:                 0x0       
-    0x320B     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2E64     0x0   BeginAddress:                  0x2C50    
-0x2E68     0x4   EndAddress:                    0x2C5B    
-0x2E6C     0x8   UnwindData:                    0x620C    
-    [UNWIND_INFO]
-    0x320C     0x0   Version:                       0x1       
-    0x320C     0x0   Flags:                         0x0       
-    0x320D     0x1   SizeOfProlog:                  0x0       
-    0x320E     0x2   CountOfCodes:                  0x0       
-    0x320F     0x3   FrameRegister:                 0x0       
-    0x320F     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2E70     0x0   BeginAddress:                  0x2C60    
-0x2E74     0x4   EndAddress:                    0x2C6B    
-0x2E78     0x8   UnwindData:                    0x6210    
-    [UNWIND_INFO]
-    0x3210     0x0   Version:                       0x1       
-    0x3210     0x0   Flags:                         0x0       
-    0x3211     0x1   SizeOfProlog:                  0x0       
-    0x3212     0x2   CountOfCodes:                  0x0       
-    0x3213     0x3   FrameRegister:                 0x0       
-    0x3213     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 
-[RUNTIME_FUNCTION]
-0x2E7C     0x0   BeginAddress:                  0x2D40    
-0x2E80     0x4   EndAddress:                    0x2DA9    
-0x2E84     0x8   UnwindData:                    0x6130    
-    [UNWIND_INFO]
-    0x3130     0x0   Version:                       0x1       
-    0x3130     0x0   Flags:                         0x0       
-    0x3131     0x1   SizeOfProlog:                  0x6       
-    0x3132     0x2   CountOfCodes:                  0x3       
-    0x3133     0x3   FrameRegister:                 0x0       
-    0x3133     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: .ALLOCSTACK 0x38; .PUSHREG RBX; .PUSHREG RSI
-[RUNTIME_FUNCTION]
-0x2E88     0x0   BeginAddress:                  0x2DB0    
-0x2E8C     0x4   EndAddress:                    0x2DB5    
-0x2E90     0x8   UnwindData:                    0x6214    
-    [UNWIND_INFO]
-    0x3214     0x0   Version:                       0x1       
-    0x3214     0x0   Flags:                         0x0       
-    0x3215     0x1   SizeOfProlog:                  0x0       
-    0x3216     0x2   CountOfCodes:                  0x0       
-    0x3217     0x3   FrameRegister:                 0x0       
-    0x3217     0x3   FrameOffset:                   0x0       
-    Flags: 
-    Unwind codes: 

@@ -18,16 +18,16 @@ class SettingsScreen(QDialog):
         self.homeButton.setIcon(icon)
         icon = QIcon('histroy.png')
         self.historyButton.setIcon(icon)
-        icon = QIcon('settings.png')
+        icon = QIcon('help.png')
         self.settingsButton.setIcon(icon)
 
     def go_to_main(self):
         self.settingsButton.setChecked(True)
-        self.widget.setCurrentIndex(2)
+        self.widget.setCurrentIndex(0)          #2 with login
 
     def go_to_history(self):
         self.settingsButton.setChecked(True)
-        self.widget.setCurrentIndex(3)
+        self.widget.setCurrentIndex(1)          #2 with login
 
     def menu_button_hovers(self):
         self.homeButton.enterEvent = lambda event: self.button_enter(event, self.homeButton, self.home_label)

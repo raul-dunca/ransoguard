@@ -19,11 +19,11 @@ widget.setWindowTitle('RansoGuard')
 database= DatabaseManager()
 hasher=argon2.PasswordHasher()
 
-sign_in_screen = SignInScreen(widget, database, hasher)
-widget.addWidget(sign_in_screen)
+# sign_in_screen = SignInScreen(widget, database, hasher)
+# widget.addWidget(sign_in_screen)
 
-sign_up_screen = SignUpScreen(widget, database, hasher)
-widget.addWidget(sign_up_screen)
+# sign_up_screen = SignUpScreen(widget, database, hasher)
+# widget.addWidget(sign_up_screen)
 
 main_screen = MainScreen(widget)
 widget.addWidget(main_screen)

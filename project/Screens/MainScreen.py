@@ -88,7 +88,7 @@ class MainScreen(QDialog):
         self.homeButton.setIcon(icon)
         icon = QIcon('histroy.png')
         self.historyButton.setIcon(icon)
-        icon = QIcon('settings.png')
+        icon = QIcon('help.png')
         self.settingsButton.setIcon(icon)
 
     def drag_enter_event(self,event):
@@ -661,15 +661,15 @@ class MainScreen(QDialog):
 
     def go_to_settings(self):
         self.homeButton.setChecked(True)
-        self.widget.setCurrentIndex(4)
+        self.widget.setCurrentIndex(2)          #4 with login
 
     def update_histroy(self):
-        history_screen_widget = self.widget.widget(3)
+        history_screen_widget = self.widget.widget(1)       #3 with login
         history_screen_widget.set_report_history(self.report_history)
 
     def go_to_history(self):
         self.homeButton.setChecked(True)
-        self.widget.setCurrentIndex(3)
+        self.widget.setCurrentIndex(1)                  #3 with login
         self.update_histroy()
 
     def menu_button_hovers(self):
