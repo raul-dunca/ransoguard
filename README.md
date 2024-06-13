@@ -13,6 +13,8 @@ The application offers a history tab, where users can see a list of their previo
 
 The model was trained and tested on 707 samples across 99 families achieved an accuracy of 71.83\%, along with a precision of 0.79 and recall of 0.72.
 
+<!--A paper about the research done and the application was published: <link>-->
+
 ## Installation Guide
 
 1) Clone the repo
@@ -23,11 +25,18 @@ git clone https://github.com/raul-dunca/ransoguard.git
 ```bash
 cd your_path/ransoguard/project
 ```
-3) Install the rquired packages
+3) Install the required packages
 ```bash
 pip install -r requirements.txt
 ```
-
-
+4) Install exiftool from https://exiftool.org/
+5) Add exiftool to the PATH environment variable (makes sure the name is exiftool.exe)
+6) Install floss from https://github.com/mandiant/flare-floss
+7) Add floss to the PATH environment variable (makes sure the name is floss.exe)
+8) Create an account on https://hybrid-analysis.com/ and add your API key to the .env file
+9) Run the app
+```bash
+python .\main.py
+```
 
    
