@@ -16,7 +16,7 @@ app = QApplication(sys.argv)
 widget = QStackedWidget()
 widget.setWindowTitle('RansoGuard')
 
-database= DatabaseManager()
+#database= DatabaseManager()
 hasher=argon2.PasswordHasher()
 
 # sign_in_screen = SignInScreen(widget, database, hasher)
