@@ -8,5 +8,4 @@
 
 
    ```bash
-   git clone test
-   cd test
+   pip install -r requirements.txt
