@@ -1,4 +1,3 @@
-import argon2
 from PyQt5.QtWidgets import QDialog
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
@@ -57,7 +56,7 @@ class SignInScreen(QDialog):  # Login
             is_password_matched=False
             try:
                 is_password_matched = self.hasher.verify(db_password, password)
-            except argon2.exceptions.VerifyMismatchError as e:
+            except Exception as e:
                 print(e)
             if is_password_matched:
                 if db_is_active:

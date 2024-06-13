@@ -1,24 +1,41 @@
 ExifTool Version Number         : 12.84
-File Name                       : c_packed.exe
+File Name                       : binkw64.dll
 Directory                       : C:/Users/dunca/Desktop/b
-File Size                       : 42408
-File Modification Date/Time     : 2024:05:14 17:50:22+03:00
-File Access Date/Time           : 2024:06:09 00:04:09+03:00
-File Creation Date/Time         : 2024:05:16 19:20:16+03:00
+File Size                       : 259072
+File Modification Date/Time     : 2018:05:24 21:36:12+03:00
+File Access Date/Time           : 2024:06:13 20:54:39+03:00
+File Creation Date/Time         : 2024:05:11 16:59:17+03:00
 File Permissions                : 100666
-File Type                       : Win64 EXE
-File Type Extension             : EXE
+File Type                       : Win64 DLL
+File Type Extension             : DLL
 MIME Type                       : application/octet-stream
 Machine Type                    : 34404
-Time Stamp                      : 2024:04:23 15:57:24+03:00
-Image File Characteristics      : 39
+Time Stamp                      : 2017:02:07 07:05:29+02:00
+Image File Characteristics      : 8226
 PE Type                         : 523
-Linker Version                  : 2.30
-Code Size                       : 12288
-Initialized Data Size           : 4096
-Uninitialized Data Size         : 65536
-Entry Point                     : 80832
-OS Version                      : 4.0
+Linker Version                  : 9.0
+Code Size                       : 152576
+Initialized Data Size           : 131072
+Uninitialized Data Size         : 0
+Entry Point                     : 120840
+OS Version                      : 5.2
 Image Version                   : 0.0
 Subsystem Version               : 5.2
-Subsystem                       : 3
+Subsystem                       : 2
+File Version Number             : 1.200.5.0
+Product Version Number          : 1.200.5.0
+File Flags Mask                 : 63
+File Flags                      : 0
+File OS                         : 0
+Object File Type                : 1
+File Subtype                    : 0
+Language Code                   : 0409
+Character Set                   : 04E4
+Company Name                    : RAD Game Tools, Inc.
+File Description                : RAD Video Tools
+File Version                    : 1.200f
+Legal Copyright                 : Copyright (C) 1994-2017, RAD Game Tools, Inc.
+Legal Trademarks                : Bink and Smacker are trademarks of RAD Game Tools, Inc.
+Product Name                    : Bink and Smacker
+Product Version                 : 1.200f
+Comments                        : Thank you for using RAD Game Tools!
