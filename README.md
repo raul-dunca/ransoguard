@@ -29,12 +29,12 @@ cd your_path/ransoguard/project
 ```bash
 pip install -r requirements.txt
 ```
-3) Install exiftool from https://exiftool.org/
-4) Add exiftool to the PATH environment variable (makes sure the name is exiftool.exe)
-5) Install floss from https://github.com/mandiant/flare-floss
-6) Add floss to the PATH environment variable (makes sure the name is floss.exe)
-7) Create an account on https://hybrid-analysis.com/ and add your API key to the .env file
-8) Run the app
+4) Install exiftool from https://exiftool.org/
+5) Add exiftool to the PATH environment variable (makes sure the name is exiftool.exe)
+6) Install floss from https://github.com/mandiant/flare-floss
+7) Add floss to the PATH environment variable (makes sure the name is floss.exe)
+8) Create an account on https://hybrid-analysis.com/ and add your API key to the .env file
+9) Run the app
 ```bash
 python .\main.py
 ```
