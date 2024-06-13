@@ -13,6 +13,8 @@ The application offers a history tab, where users can see a list of their previo
 
 The model was trained and tested on 707 samples across 99 families achieved an accuracy of 71.83\%, along with a precision of 0.79 and recall of 0.72.
 
+<!--A paper about the research done and the application was published: <link>-->
+
 ## Installation Guide
 
 1) Clone the repo
