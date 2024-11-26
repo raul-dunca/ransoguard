@@ -1,6 +1,6 @@
 # RansoGuard
 ## Note
-An article about the research was published at DOI: 10.5220/0013065400003825
+An article about the research was published at DOI: [10.5220/0013065400003825](https://www.scitepress.org/Papers/2024/130654/130654.pdf)
 ## Overview
 RansoGuard is a graphical user interface Windows application that given a portable executable, it predicts the ransomware family the sample belongs to and generates a report. Following the file upload, three static tools and one dynamic tool run in parallel and extract the 783 selected features identified as the most valuable (using the [Information Gain Method](https://weka.sourceforge.io/doc.dev/weka/attributeSelection/InfoGainAttributeEval.html) from [WEKA](https://ml.cms.waikato.ac.nz/weka/)). The static tools used are: 
 - [floss](https://github.com/mandiant/flare-floss) - for extracting the strings from a file 
